@@ -1,13 +1,18 @@
-from models.sklearn_lr import SklearnLR
+from models.lr import LR
 from shared.eval import test_model_implementation
 
 class_params = {
             "n_samples": 10000,
             "n_features": 20,
             "n_classes": 2,
-            "class_sep": 4,
+            "class_sep": 8,
             "random_state": 88
 }
 
-test_model_implementation(SklearnLR(), **class_params)
+training_params = {
+    "lr": 0.001,
+    "batch_size": 64
+}
+
+test_model_implementation(LR(**training_params), **class_params)
 
