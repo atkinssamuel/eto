@@ -48,7 +48,10 @@ class LinearLayer:
         """
         stacked_bias = self.stack_bias(X.shape[0])
         self.X = X
-        return np.matmul(X, self.W) + stacked_bias
+        out = np.matmul(X, self.W) + stacked_bias
+        if out.shape[1] == 1:
+            out = out.flatten()
+        return out
 
     def backward(self, E, lr=0.001):
         self.W = self.W - lr * np.matmul(np.transpose(self.X), E)
@@ -62,6 +65,12 @@ class LinearLayer:
         return np.array(stacked_bias)
 
 
+class SigmoidLayer:
+    @staticmethod
+    def forward(X):
+        return 1/(1 + np.exp(X))
+
+
 class LR(Model):
     def __init__(self, lr=0.001, batch_size=64):
         super().__init__()
@@ -72,6 +81,7 @@ class LR(Model):
 
     def init_layers(self, X):
         self.layers.append(LinearLayer(input_dim=X.shape[1], output_dim=1))
+        self.layers.append(SigmoidLayer())
 
     def forward(self, X):
         """
@@ -105,9 +115,12 @@ class LR(Model):
             out = self.forward(X_batch)
             self.losses.append(self.compute_loss(y_batch, out, loss_fn="bce"))
 
-    def compute_loss(self, y_true, y_pred, loss_fn="bce"):
+    @staticmethod
+    def compute_loss(y_true, y_pred, loss_fn="bce"):
         if loss_fn == "bce":
-            return -(np.matmul(y_true, np.log(y_pred)) + np.matmul((1. - y_true), np.log(1. - y_pred)))
+            t1 = np.multiply(y_true, np.log(y_pred))
+            t2 = np.multiply((np.ones(shape=y_true.shape) - y_true), np.log(np.ones(shape=y_pred.shape) - y_pred))
+            return -np.add(t1, t2)
 
     def predict(self, X):
         pass
