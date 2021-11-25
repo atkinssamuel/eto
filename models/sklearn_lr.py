@@ -2,13 +2,12 @@ from sklearn.linear_model import LogisticRegression
 from models.model import Model
 
 
-class SklearnLR(Model):
+class SklearnLR:
     """
     Class that implements an sklearn LR model
     """
 
     def __init__(self, **params):
-        super().__init__()
         self.model = LogisticRegression(**params)
 
     def fit(self, X, y):

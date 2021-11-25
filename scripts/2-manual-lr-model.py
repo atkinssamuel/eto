@@ -11,7 +11,8 @@ class_params = {
 
 training_params = {
     "lr": 0.001,
-    "batch_size": 64
+    "batch_size": 64,
+    "n_epochs": 500
 }
 
 test_model_implementation(LR(**training_params), **class_params)
