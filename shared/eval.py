@@ -1,7 +1,7 @@
 from sklearn.metrics import classification_report
 
 from data.loader import load_sklearn_classification_data
-from models.model_implementations.model import Model
+from models.model import Model
 
 
 def evaluate_model(preds, y_true, model_title=None):

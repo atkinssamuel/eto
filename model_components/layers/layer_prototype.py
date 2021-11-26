@@ -20,7 +20,7 @@ class Layer:
         pass
 
     @abstractmethod
-    def backward(self, E, lr=0.001):
+    def backward(self, E):
         """
         Computes the updated error signal and updates the internal weights of the layer
 
@@ -28,8 +28,6 @@ class Layer:
         ----------
         E: np.array
             The error signal
-        lr: float
-            The learning rate
 
         Returns
         -------

@@ -1,4 +1,5 @@
 from models.model_implementations.lr import LR
+from optimization_functions.gradient_descent import GradientDescent
 from shared.eval import test_model_implementation
 
 class_params = {
@@ -13,6 +14,7 @@ training_params = {
     "lr": 0.001,
     "batch_size": 512,
     "n_epochs": 500,
+    "optimization_fn": GradientDescent,
     "plot_losses": True
 }
 

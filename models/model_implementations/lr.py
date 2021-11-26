@@ -1,7 +1,7 @@
-from layers.activation_functions.sigmoid_layer import SigmoidLayer
-from layers.linear_layer import LinearLayer
-from layers.loss_functions.bce_loss import BCELoss
-from models.model_implementations.model import Model
+from model_components.activation_functions.sigmoid_layer import SigmoidLayer
+from model_components.layers.linear_layer import LinearLayer
+from model_components.loss_functions.bce_loss import BCELoss
+from models.model import Model
 
 
 class LR(Model):

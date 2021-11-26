@@ -4,22 +4,30 @@ from abc import abstractmethod
 import numpy as np
 from matplotlib import pyplot as plt
 
+from model_components.loss_functions.bce_loss import BCELoss
+from model_components.optimization_functions.gradient_descent import GradientDescent
+from shared.helpers import xavier_init
+
 
 class Model:
     """
     This is the over-arching "Model" class that all subsequent models must inherit from to ensure that the model
     functionality is consistent
     """
-    def __init__(self, lr, batch_size, n_epochs, plot_losses):
-        self.model = None
-        self.layers = None
-        self.lr = lr
+    def __init__(self, batch_size=256, n_epochs=50, lr=0.01, momentum=0.01, plot_losses=False, loss_fn=BCELoss,
+                 optimization_fn=GradientDescent, weight_init_fn=xavier_init):
+        # hyperparameters:
         self.batch_size = batch_size
         self.n_epochs = n_epochs
-        self.layers = []
-        self.loss_fn = None
-        self.losses = []
+        self.lr = lr
+        self.momentum = momentum
         self.plot_losses = plot_losses
+        self.loss_fn = loss_fn
+        self.optimization_fn = optimization_fn
+        self.weight_init_fn = weight_init_fn
+
+        self.layers = []
+        self.losses = []
 
     def fit(self, X, y):
         """
@@ -70,7 +78,7 @@ class Model:
 
     def forward(self, X):
         """
-        Computes the forward pass for all of the layers in self.layers
+        Computes the forward pass for all of the model_components in self.model_components
 
         Parameters
         ----------
@@ -91,7 +99,7 @@ class Model:
 
     def backward(self, y):
         """
-        Computes the backward pass for all layers in self.layers
+        Computes the backward pass for all model_components in self.model_components
 
         Parameters
         ----------
@@ -123,7 +131,7 @@ class Model:
     @abstractmethod
     def init_layers(self, X):
         """
-        This method initializes the layers to be used in the model
+        This method initializes the model_components to be used in the model
 
         Parameters
         ----------

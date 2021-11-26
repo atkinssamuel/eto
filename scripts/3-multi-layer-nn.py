@@ -1,4 +1,4 @@
-from models.multi_layer_nn import NN
+from models.model_implementations.multi_layer_nn import NN
 from shared.eval import test_model_implementation
 
 class_params = {

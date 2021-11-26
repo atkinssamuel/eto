@@ -1,6 +1,6 @@
 import numpy as np
 
-from layers.loss_functions.loss_function_prototype import Loss
+from model_components.loss_functions.loss_function_prototype import Loss
 
 
 class BCELoss(Loss):

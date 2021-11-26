@@ -1,6 +1,6 @@
 import numpy as np
 
-from layers.layer_prototype import Layer
+from model_components.layers.layer_prototype import Layer
 
 
 class SigmoidLayer(Layer):
