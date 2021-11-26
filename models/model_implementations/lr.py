@@ -1,11 +1,7 @@
-import math
-
-import numpy as np
-
 from layers.activation_functions.sigmoid_layer import SigmoidLayer
 from layers.linear_layer import LinearLayer
 from layers.loss_functions.bce_loss import BCELoss
-from models.model import Model
+from models.model_implementations.model import Model
 
 
 class LR(Model):

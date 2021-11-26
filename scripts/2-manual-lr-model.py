@@ -1,4 +1,4 @@
-from models.lr import LR
+from models.model_implementations.lr import LR
 from shared.eval import test_model_implementation
 
 class_params = {
