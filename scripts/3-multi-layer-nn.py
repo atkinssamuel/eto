@@ -1,4 +1,4 @@
-from models.lr import LR
+from models.multi_layer_nn import NN
 from shared.eval import test_model_implementation
 
 class_params = {
@@ -10,11 +10,11 @@ class_params = {
 }
 
 training_params = {
-    "lr": 0.001,
-    "batch_size": 512,
-    "n_epochs": 500,
+    "lr": 0.1,
+    "batch_size": 1028,
+    "n_epochs": 50,
     "plot_losses": True
 }
 
-test_model_implementation(LR(**training_params), **class_params)
+test_model_implementation(NN(**training_params), **class_params)
 

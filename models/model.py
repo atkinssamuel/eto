@@ -2,6 +2,7 @@ import math
 from abc import abstractmethod
 
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 class Model:
@@ -9,7 +10,7 @@ class Model:
     This is the over-arching "Model" class that all subsequent models must inherit from to ensure that the model
     functionality is consistent
     """
-    def __init__(self, lr, batch_size, n_epochs):
+    def __init__(self, lr, batch_size, n_epochs, plot_losses):
         self.model = None
         self.layers = None
         self.lr = lr
@@ -18,6 +19,7 @@ class Model:
         self.layers = []
         self.loss_fn = None
         self.losses = []
+        self.plot_losses = plot_losses
 
     def fit(self, X, y):
         """
@@ -43,6 +45,9 @@ class Model:
                 loss, loss_signal = self.loss_fn.compute_loss(y_batch, out)
                 self.losses.append(np.average(loss))
                 self.backward(loss_signal)
+
+        if self.plot_losses:
+            self.plot_loss_curve()
 
     def predict(self, X):
         """
@@ -110,6 +115,10 @@ class Model:
             X_batches.append(X[start_ind:end_ind])
             y_batches.append(y[start_ind:end_ind])
         return np.array(X_batches), np.array(y_batches)
+
+    def plot_loss_curve(self):
+        plt.plot(self.losses)
+        plt.show()
 
     @abstractmethod
     def init_layers(self, X):
