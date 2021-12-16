@@ -4,7 +4,9 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
 
-def load_sklearn_classification_data(valid: bool = False, split: list = None, **class_params: dict) -> list:
+def load_sklearn_classification_data(
+    valid: bool = False, split: list = None, **class_params: dict
+) -> list:
     """
     Loads in an artificial classification dataset using sklearn's make_classification function
 
@@ -55,11 +57,11 @@ def load_sklearn_classification_data(valid: bool = False, split: list = None, **
 
     if split is None:
         if valid is False:
-            split = [.8, .2]
+            split = [0.8, 0.2]
         else:
-            split = [.7, .15, .15]
+            split = [0.7, 0.15, 0.15]
     else:
-        split = list(np.array(split)/np.sum(split))
+        split = list(np.array(split) / np.sum(split))
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split[-1])
 
@@ -67,6 +69,7 @@ def load_sklearn_classification_data(valid: bool = False, split: list = None, **
         return [X_train, X_test, y_train, y_test]
     else:
         test_size_split = X.shape[0] / X_train.shape[0] * split[1]
-        X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size=test_size_split,
-                                                              random_state=1)
+        X_train, X_valid, y_train, y_valid = train_test_split(
+            X_train, y_train, test_size=test_size_split, random_state=1
+        )
         return [X_train, X_valid, X_test, y_train, y_valid, y_test]

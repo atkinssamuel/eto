@@ -25,5 +25,7 @@ class SigmoidLayer(Layer):
         """
         E_hat = sigmoid(X) * (1 - sigmoid(X))
         """
-        t1 = np.multiply(self.sigmoid(self.X), np.ones(shape=self.X.shape) - self.sigmoid(self.X))
+        t1 = np.multiply(
+            self.sigmoid(self.X), np.ones(shape=self.X.shape) - self.sigmoid(self.X)
+        )
         return np.multiply(E, t1)

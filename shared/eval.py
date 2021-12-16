@@ -47,9 +47,14 @@ def test_model_implementation(model: Model, **class_params):
 
     """
 
-    X_train, X_valid, X_test, y_train, y_valid, y_test = load_sklearn_classification_data(valid=True,
-                                                                                          split=[70, 10, 20],
-                                                                                          **class_params)
+    (
+        X_train,
+        X_valid,
+        X_test,
+        y_train,
+        y_valid,
+        y_test,
+    ) = load_sklearn_classification_data(valid=True, split=[70, 10, 20], **class_params)
 
     model.fit(X_train, y_train)
     preds = model.predict(X_test)

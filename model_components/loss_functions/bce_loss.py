@@ -11,11 +11,21 @@ class BCELoss(Loss):
         """
         y_true = y_true.reshape(-1, 1)
         t1 = np.multiply(y_true, np.log(y_pred + np.ones(shape=y_pred.shape) * 0.0001))
-        t2 = np.multiply((np.ones(shape=y_true.shape) - y_true),
-                         np.log(np.ones(shape=y_pred.shape) - y_pred + np.ones(shape=y_pred.shape) * 0.0001))
+        t2 = np.multiply(
+            (np.ones(shape=y_true.shape) - y_true),
+            np.log(
+                np.ones(shape=y_pred.shape)
+                - y_pred
+                + np.ones(shape=y_pred.shape) * 0.0001
+            ),
+        )
         loss = -np.add(t1, t2).reshape(-1, 1)
-        loss_signal = ((y_true - y_pred)/\
-                      (y_pred * (np.ones(shape=y_pred.shape) - y_pred) + np.ones(shape=y_pred.shape) * 0.0001))\
-            .reshape(-1, 1)
+        loss_signal = (
+            (y_true - y_pred)
+            / (
+                y_pred * (np.ones(shape=y_pred.shape) - y_pred)
+                + np.ones(shape=y_pred.shape) * 0.0001
+            )
+        ).reshape(-1, 1)
 
         return loss, loss_signal

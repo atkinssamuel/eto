@@ -14,8 +14,16 @@ class Model:
     This is the over-arching "Model" class that all subsequent models must inherit from to ensure that the model
     functionality is consistent
     """
-    def __init__(self, batch_size=256, n_epochs=50, lr=0.01, momentum=0.01, plot_losses=False, loss_fn=BCELoss,
-                 optimization_fn=GradientDescent, weight_init_fn=xavier_init):
+
+    def __init__(
+        self,
+        batch_size=256,
+        n_epochs=50,
+        lr=0.01,
+        momentum=0.01,
+        plot_losses=False,
+        loss_fn=BCELoss,
+    ):
         # hyperparameters:
         self.batch_size = batch_size
         self.n_epochs = n_epochs
@@ -23,8 +31,6 @@ class Model:
         self.momentum = momentum
         self.plot_losses = plot_losses
         self.loss_fn = loss_fn
-        self.optimization_fn = optimization_fn
-        self.weight_init_fn = weight_init_fn
 
         self.layers = []
         self.losses = []
@@ -107,17 +113,17 @@ class Model:
             A numpy array of labels
         """
         E = y
-        for i in range(len(self.layers)-1, -1, -1):
+        for i in range(len(self.layers) - 1, -1, -1):
             E = self.layers[i].backward(E)
 
     def create_batches(self, X, y):
         X_batches = []
         y_batches = []
-        n_batches = math.ceil(X.shape[0]/self.batch_size)
+        n_batches = math.ceil(X.shape[0] / self.batch_size)
 
         start_ind = 0
         end_ind = self.batch_size
-        for batch_ind in range(n_batches-1):
+        for batch_ind in range(n_batches - 1):
             start_ind += self.batch_size
             end_ind = min(end_ind + self.batch_size, X.shape[0])
             X_batches.append(X[start_ind:end_ind])

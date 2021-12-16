@@ -16,7 +16,7 @@ class OptimizationFunction:
         self.lr = lr
         self.momentum = momentum
 
-    def update(self, parameter, gradient):
+    def update(self, parameter, gradient, momentum=None):
         """
         Returns the updated parameter given the parameter and the gradient of the parameter
 
@@ -26,6 +26,9 @@ class OptimizationFunction:
             A numpy array of parameters (weights)
         gradient: np.array
             A numpy array of parameter gradients
+        momentum: np.array
+            A numpy array that contains the momentum value for the previous time step
+
 
         Returns
         -------
