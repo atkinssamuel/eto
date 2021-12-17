@@ -1,4 +1,4 @@
-from models.model_implementations.multi_layer_nn import NN
+from models.model_implementations.nag_lr import NAGLR
 from shared.eval import test_model_implementation
 
 class_params = {
@@ -12,9 +12,9 @@ class_params = {
 training_params = {
     "lr": 0.01,
     "mu": 0.01,
-    "batch_size": 512,
+    "batch_size": 1028,
     "n_epochs": 50,
     "plot_losses": True,
 }
 
-test_model_implementation(NN(**training_params), **class_params)
+test_model_implementation(NAGLR(**training_params), **class_params)

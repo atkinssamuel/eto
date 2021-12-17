@@ -11,7 +11,7 @@ class LinearLayer(Layer):
         input_dim,
         output_dim,
         lr=0.01,
-        momentum=0.01,
+        mu=0.01,
         optimization_fn=GradientDescent,
         weight_init_fn=xavier_init,
     ):
@@ -20,14 +20,10 @@ class LinearLayer(Layer):
         self.output_dim = output_dim
 
         self.W = weight_init_fn(input_dim, output_dim)
-        self.W_m = 0
+        self.W_opt = optimization_fn(lr, mu)
 
         self.b = weight_init_fn(output_dim)
-        self.b_m = 0
-
-        self.lr = lr
-        self.momentum = momentum
-        self.optimization_fn = optimization_fn(self.lr, self.momentum)
+        self.b_opt = optimization_fn(lr, mu)
 
     def forward(self, X):
         """
@@ -64,16 +60,8 @@ class LinearLayer(Layer):
         E_hat: np.array of floats
             The updated error signal (dL/dX) passed on to the next layer
         """
-        W_opt = self.optimization_fn.update(
-            self.W, np.matmul(np.transpose(self.X), E), self.W_m
-        )
-        self.W = W_opt[0] if type(W_opt) is tuple else W_opt
-        self.W_m = W_opt[1] if type(W_opt) is tuple else None
-
-        b_opt = self.optimization_fn.update(self.b, np.sum(E), self.b_m)
-        self.b = b_opt[0] if type(b_opt) is tuple else b_opt
-        self.b_m = b_opt[1] if type(b_opt) is tuple else None
-
+        self.W = self.W_opt.update(self.W, np.matmul(np.transpose(self.X), E))
+        self.b = self.b_opt.update(self.b, np.sum(E))
         return np.matmul(E, np.transpose(self.W))
 
     def stack_bias(self, height):

@@ -20,7 +20,7 @@ class Model:
         batch_size=256,
         n_epochs=50,
         lr=0.01,
-        momentum=0.01,
+        mu=0.01,
         plot_losses=False,
         loss_fn=BCELoss,
     ):
@@ -28,7 +28,7 @@ class Model:
         self.batch_size = batch_size
         self.n_epochs = n_epochs
         self.lr = lr
-        self.momentum = momentum
+        self.mu = mu
         self.plot_losses = plot_losses
         self.loss_fn = loss_fn
 

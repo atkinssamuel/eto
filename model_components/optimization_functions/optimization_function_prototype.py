@@ -1,8 +1,5 @@
-from abc import abstractmethod
-
-
 class OptimizationFunction:
-    def __init__(self, lr=0.01, momentum=0.01):
+    def __init__(self, lr=0.01, mu=0.01):
         """
         Initializes the parameters used in the update function
 
@@ -10,13 +7,13 @@ class OptimizationFunction:
         ----------
         lr: float
             The learning rate
-        momentum: float
+        mu: float
             The momentum term
         """
         self.lr = lr
-        self.momentum = momentum
+        self.mu = mu
 
-    def update(self, parameter, gradient, momentum=None):
+    def update(self, parameter, gradient):
         """
         Returns the updated parameter given the parameter and the gradient of the parameter
 
@@ -26,9 +23,6 @@ class OptimizationFunction:
             A numpy array of parameters (weights)
         gradient: np.array
             A numpy array of parameter gradients
-        momentum: np.array
-            A numpy array that contains the momentum value for the previous time step
-
 
         Returns
         -------

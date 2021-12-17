@@ -4,10 +4,11 @@ from model_components.optimization_functions.optimization_function_prototype imp
 
 
 class ClassicalMomentum(OptimizationFunction):
-    def __init__(self, lr=0.01, momentum=0.01):
-        super().__init__(lr, momentum)
+    def __init__(self, lr=0.01, mu=0.01):
+        super().__init__(lr, mu)
+        self.v = 0
 
-    def update(self, parameter, gradient, momentum=None):
+    def update(self, parameter, gradient):
         """
         Returns the updated parameter given the parameter and the gradient of the parameter
 
@@ -24,15 +25,14 @@ class ClassicalMomentum(OptimizationFunction):
             A numpy array of parameters (weights)
         gradient: np.array
             A numpy array of parameter gradients
-        momentum: np.array
-            A numpy array that contains the momentum value for the previous time step
 
         Returns
         -------
         updated_parameter: np.array
             A numpy array of updated parameters (weights)
-        momentum: np.array
-            A numpy array that contains the momentum value for the current time step
         """
-        v = self.momentum * momentum - self.lr * gradient
-        return parameter + v, v
+        # v_t+1 = u (self.mu) * v_t (self.v) - lr * dL/d(theta) (gradient)
+        self.v = self.mu * self.v - self.lr * gradient
+
+        # theta_t+1 = theta_t (parameter) + v_t+1 (self.v)
+        return parameter + self.v

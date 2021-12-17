@@ -4,10 +4,10 @@ from model_components.optimization_functions.optimization_function_prototype imp
 
 
 class GradientDescent(OptimizationFunction):
-    def __init__(self, lr=0.01, momentum=0.01):
-        super().__init__(lr, momentum)
+    def __init__(self, lr=0.01, mu=0.01):
+        super().__init__(lr, mu)
 
-    def update(self, parameter, gradient, momentum=None):
+    def update(self, parameter, gradient):
         """
         Computes a gradient descent parameter update
 
