@@ -1,8 +1,9 @@
 import numpy as np
 
+from model_components.initialization_functions.zeros_init import ZerosInit
 from model_components.layers.layer_prototype import Layer
 from model_components.optimization_functions.gradient_descent import GradientDescent
-from shared.helpers import xavier_init
+from model_components.initialization_functions.xavier_init import XavierInit
 
 
 class LinearLayer(Layer):
@@ -13,16 +14,17 @@ class LinearLayer(Layer):
         lr=0.01,
         mu=0.01,
         optimization_fn=GradientDescent,
-        weight_init_fn=xavier_init,
+        weight_init_fn=XavierInit,
+        bias_init_fn=ZerosInit
     ):
         self.X = None
         self.input_dim = input_dim
         self.output_dim = output_dim
 
-        self.W = weight_init_fn(input_dim, output_dim)
+        self.W = weight_init_fn().init(input_dim, output_dim)
         self.W_opt = optimization_fn(lr, mu)
 
-        self.b = weight_init_fn(output_dim)
+        self.b = bias_init_fn().init(output_dim)
         self.b_opt = optimization_fn(lr, mu)
 
     def forward(self, X):

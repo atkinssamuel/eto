@@ -1,3 +1,4 @@
+from model_components.optimization_functions.nesterov_accelerated_gd import NAG
 from shared.eval import test_model_implementation
 from model_components.layers.sigmoid_layer import SigmoidLayer
 from model_components.layers.linear_layer import LinearLayer
@@ -12,18 +13,14 @@ class NN(Model):
     def init_layers(self, X):
         self.layers.append(
             LinearLayer(
-                input_dim=X.shape[1], output_dim=X.shape[1] * 2, lr=self.lr, mu=self.mu
+                input_dim=X.shape[1], optimization_fn=NAG, output_dim=X.shape[1], lr=self.lr, mu=self.mu
             )
         )
         self.layers.append(SigmoidLayer())
         self.layers.append(
             LinearLayer(
-                input_dim=X.shape[1] * 2, output_dim=X.shape[1], lr=self.lr, mu=self.mu
+                input_dim=X.shape[1], optimization_fn=NAG, output_dim=1, lr=self.lr, mu=self.mu
             )
-        )
-        self.layers.append(SigmoidLayer())
-        self.layers.append(
-            LinearLayer(input_dim=X.shape[1], output_dim=1, lr=self.lr, mu=self.mu)
         )
         self.layers.append(SigmoidLayer())
         self.loss_fn = BCELoss()

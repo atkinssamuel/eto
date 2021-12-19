@@ -1,12 +1,8 @@
 import math
 from abc import abstractmethod
-
 import numpy as np
 from matplotlib import pyplot as plt
-
 from model_components.loss_functions.bce_loss import BCELoss
-from model_components.optimization_functions.gradient_descent import GradientDescent
-from shared.helpers import xavier_init
 
 
 class Model:

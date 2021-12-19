@@ -1,3 +1,7 @@
+from model_components.initialization_functions.xavier_init import XavierInit
+from model_components.initialization_functions.zeros_init import ZerosInit
+from model_components.layers.sigmoid_approx_layer import SigmoidApprox
+from model_components.loss_functions.lse_loss import LSELoss
 from shared.eval import test_model_implementation
 from model_components.layers.rescaling_layer import RescalingLayer
 from model_components.layers.linear_layer import LinearLayer
@@ -18,14 +22,15 @@ class ToyModel(Model):
                 input_dim=X.shape[1],
                 output_dim=1,
                 optimization_fn=NAG,
+                weight_init_fn=XavierInit,
+                bias_init_fn=ZerosInit,
                 lr=self.lr,
                 mu=self.mu,
             )
         )
-        self.layers.append(SquaredLayer())
-        self.layers.append(RescalingLayer(1 / 100))
-        self.layers.append(SigmoidLayer())
-        self.loss_fn = BCELoss()
+        self.layers.append(RescalingLayer(1/1000))
+        self.layers.append(SigmoidApprox())
+        self.loss_fn = LSELoss()
 
 
 class_params = {
@@ -37,10 +42,10 @@ class_params = {
 }
 
 training_params = {
-    "lr": 0.01,
-    "mu": 0.01,
-    "batch_size": 1028,
-    "n_epochs": 50,
+    "lr": 0.0001,
+    "mu": 0.000,
+    "batch_size": 2056,
+    "n_epochs": 200,
     "plot_losses": True,
 }
 

@@ -1,5 +1,4 @@
-from model_components.layers.rescaling_layer import RescalingLayer
-from model_components.layers.sigmoid_approx_layer import SigmoidApprox
+from model_components.layers.sigmoid_layer import SigmoidLayer
 from model_components.loss_functions.lse_loss import LSELoss
 from shared.eval import test_model_implementation
 from model_components.layers.linear_layer import LinearLayer
@@ -21,8 +20,7 @@ class LSEModel(Model):
                 mu=self.mu,
             )
         )
-        self.layers.append(SigmoidApprox(deg=7))
-        self.layers.append(RescalingLayer(1/100000))
+        self.layers.append(SigmoidLayer())
         self.loss_fn = LSELoss()
 
 
