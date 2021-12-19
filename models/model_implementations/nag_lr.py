@@ -12,7 +12,11 @@ class NAGLR(Model):
     def init_layers(self, X):
         self.layers.append(
             LinearLayer(
-                input_dim=X.shape[1], output_dim=1, optimization_fn=NAG, lr=self.lr, mu=self.mu
+                input_dim=X.shape[1],
+                output_dim=1,
+                optimization_fn=NAG,
+                lr=self.lr,
+                mu=self.mu,
             )
         )
         self.layers.append(SigmoidLayer())

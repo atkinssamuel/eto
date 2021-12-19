@@ -9,6 +9,8 @@ class LR(Model):
         super().__init__(**kwargs)
 
     def init_layers(self, X):
-        self.layers.append(LinearLayer(input_dim=X.shape[1], output_dim=1, lr=self.lr, mu=self.mu))
+        self.layers.append(
+            LinearLayer(input_dim=X.shape[1], output_dim=1, lr=self.lr, mu=self.mu)
+        )
         self.layers.append(SigmoidLayer())
         self.loss_fn = BCELoss()
