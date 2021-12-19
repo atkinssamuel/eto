@@ -28,25 +28,23 @@ class ToyModel(Model):
                 mu=self.mu,
             )
         )
-        self.layers.append(RescalingLayer(1/1000))
-        self.layers.append(SigmoidApprox())
         self.loss_fn = LSELoss()
 
 
-class_params = {
-    "n_samples": 10000,
+data_params = {
+    "n_samples": 100000,
     "n_features": 20,
-    "n_classes": 2,
-    "class_sep": 8,
+    "n_informative": 15,
+    "n_targets": 1,
     "random_state": 88,
 }
 
 training_params = {
-    "lr": 0.0001,
+    "lr": 0.005,
     "mu": 0.000,
-    "batch_size": 2056,
-    "n_epochs": 200,
+    "batch_size": 64,
+    "n_epochs": 20,
     "plot_losses": True,
 }
 
-test_model_implementation(ToyModel(**training_params), **class_params)
+test_model_implementation(ToyModel(**training_params), problem_type="regression", **data_params)

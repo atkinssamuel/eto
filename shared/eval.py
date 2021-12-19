@@ -1,10 +1,10 @@
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
-from data.loader import load_sklearn_classification_data
+from data.loader import load_sklearn_data
 from model_components.model import Model
 
 
-def evaluate_model(preds, y_true, model_title=None):
+def evaluate_model(preds, y_true, problem_type, model_title=None):
     """
     Evaluates the predictions of the model
     Parameters
@@ -15,15 +15,22 @@ def evaluate_model(preds, y_true, model_title=None):
     y_true: np.array of integers
         A numpy array of integer true values. Must be 1-dimensional (shape [N,])
 
+    problem_type: str
+        "classification" or "regression"
+
     model_title: str
         An optional argument that delineates the name of the model
 
     """
-    print(f"Evaluating Model:" if model_title is None else f"Evaluating {model_title}:")
-    print(classification_report(y_true, preds))
+    if problem_type == "classification":
+        print(f"Evaluating Model:" if model_title is None else f"Evaluating {model_title}:")
+        print(classification_report(y_true, preds))
+    elif problem_type == "regression":
+        print("Mean Squared Error: %.2f" % mean_squared_error(y_true, preds))
+        print("Coefficient of Determination: [0 | %.2f | 1]" % r2_score(y_true, preds))
 
 
-def test_model_implementation(model: Model, **class_params):
+def test_model_implementation(model: Model, problem_type="classification", **class_params):
     """
     The purpose of this function is to test the implementation of a class that inherits the Model object
 
@@ -46,7 +53,6 @@ def test_model_implementation(model: Model, **class_params):
         }
 
     """
-
     (
         X_train,
         X_valid,
@@ -54,8 +60,8 @@ def test_model_implementation(model: Model, **class_params):
         y_train,
         y_valid,
         y_test,
-    ) = load_sklearn_classification_data(valid=True, split=[70, 10, 20], **class_params)
+    ) = load_sklearn_data(problem_type, valid=True, split=[70, 10, 20], **class_params)
 
     model.fit(X_train, y_train)
     preds = model.predict(X_test)
-    evaluate_model(preds, y_test)
+    evaluate_model(preds, y_test, problem_type)

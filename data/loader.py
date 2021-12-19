@@ -1,17 +1,19 @@
 import numpy as np
 import pandas as pd
-from sklearn.datasets import make_classification
+from sklearn.datasets import make_classification, make_regression
 from sklearn.model_selection import train_test_split
 
 
-def load_sklearn_classification_data(
-    valid: bool = False, split: list = None, **class_params: dict
+def load_sklearn_data(
+    problem_type, valid: bool = False, split: list = None, **data_params: dict
 ) -> list:
     """
     Loads in an artificial classification dataset using sklearn's make_classification function
 
     Parameters
     ----------
+    problem_type: str
+        A string that indicates the problem type ("classification" or "regression")
     valid: bool
         A boolean variable that determines if a validation dataset should be returned
 
@@ -22,8 +24,8 @@ def load_sklearn_classification_data(
 
         [80, 20] or [0.8, 0.2]
 
-    class_params: dict
-        A dictionary of optional arguments for the make_classification function
+    data_params: dict
+        A dictionary of optional arguments for the make_classification/make_regression function
 
         E.g.:
 
@@ -53,7 +55,12 @@ def load_sklearn_classification_data(
         y_valid: np.array of shape [N_valid,]
         y_test: np.array of shape [N_test,]
     """
-    X, y = make_classification(**class_params)
+    if problem_type == "classification":
+        X, y = make_classification(**data_params)
+    elif problem_type == "regression":
+        X, y = make_regression(**data_params)
+    else:
+        raise Exception("Incorrect problem type. Supported problem types are \"classification\" and \"regression\"")
 
     if split is None:
         if valid is False:
