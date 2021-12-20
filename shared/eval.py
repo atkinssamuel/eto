@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
 from data.loader import load_sklearn_data
@@ -64,4 +65,5 @@ def test_model_implementation(model: Model, problem_type="classification", **cla
 
     model.fit(X_train, y_train)
     preds = model.predict(X_test)
+
     evaluate_model(preds, y_test, problem_type)
