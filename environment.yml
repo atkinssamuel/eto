@@ -8,4 +8,4 @@ dependencies:
   - matplotlib
   - pandas
   - scikit-learn
-  - pybind11
+  - pb11

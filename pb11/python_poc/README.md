@@ -14,12 +14,8 @@ sudo apt install python3-dev
 sudo apt install cmake
 sudo apt install g++
 ```
-3. Make a build directory
-```
-mkdir build
-```
-4. Make a file that mimics the structure of the ```example.cpp``` file in this directory
-5. Build the library
+3. Make a file that mimics the structure of the ```example.cpp``` file in this directory
+4. Build the library
 ```
 c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) example.cpp -o example$(python3-config --extension-suffix)
 ```

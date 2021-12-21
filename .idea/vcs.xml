@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/pybind11/SEAL_poc/pybind11" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/pybind11/cmake_poc/pybind11" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/pybind11/pybind11" vcs="Git" />
   </component>
 </project>
