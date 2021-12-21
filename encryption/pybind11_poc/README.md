@@ -24,4 +24,9 @@ mkdir build
 c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) example.cpp -o example$(python3-config --extension-suffix)
 ```
 
-The functionality defined in the .cpp file will now be exposed in Python.
+The functionality defined in the .cpp file will now be exposed in Python. To import the "example" library, include an 
+```__init__.py``` file in the directory that contains the ```.so``` file and then import the library:
+
+```
+from pybind11_poc import example
+```
