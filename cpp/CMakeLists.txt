@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
-project(encrypted_operations)
+project(cpp)
 
 add_subdirectory(pybind11)
 pybind11_add_module(encrypted_operations encrypted_operations.cpp)
+pybind11_add_module(CKKSEncryption CKKSEncryption.cpp)
 
 find_package(SEAL)
 target_link_libraries(encrypted_operations PRIVATE SEAL::seal)
+target_link_libraries(CKKSEncryption PRIVATE SEAL::seal)
