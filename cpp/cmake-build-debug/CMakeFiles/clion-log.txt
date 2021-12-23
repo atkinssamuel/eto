@@ -1,0 +1,30 @@
+/opt/clion-2021.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion-2021.3/bin/ninja/linux/ninja -G Ninja /home/atkinswsl/projects/eto/cpp
+-- The C compiler identification is GNU 9.3.0
+-- The CXX compiler identification is GNU 9.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- pybind11 v2.9.0 dev1
+-- Found PythonInterp: /home/atkinswsl/programs/miniconda3/bin/python (found version "3.9.5") 
+-- Found PythonLibs: /home/atkinswsl/programs/miniconda3/lib/libpython3.9.so
+-- Performing Test HAS_FLTO
+-- Performing Test HAS_FLTO - Success
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- Microsoft SEAL -> Version 3.7.2 detected
+-- Microsoft SEAL -> Targets available: SEAL::seal
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/atkinswsl/projects/eto/cpp/cmake-build-debug

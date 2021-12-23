@@ -1,5 +1,5 @@
-from pb11.pb_toy.build import toy
-import numpy as np
+from cpp.build.CKKSEncryption import *
 
-toy.ckks_test()
-
+enc_class = CKKSEncryption()
+print(enc_class.Encrypt())
+print("Hello World")
