@@ -131,3 +131,4 @@ dmypy.json
 # custom .gitignores
 SEAL/
 pybind11/
+cmake-build-debug/

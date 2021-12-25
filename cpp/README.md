@@ -24,23 +24,6 @@ sudo cmake --install build
 ```
 4. Remove the SEAL directory
 
-*NOTE:*  
-By default SEAL declares the Encryptor, Evaluator, and Decryptor classes as non-copyable. This prevents one 
-from creating Encryptor, Evaluator, and Decryptor members for a custom class. To rectify this problem, the 
-following files were edited:
-
-```
-/usr/local/include/SEAL-3.7/seal/encryptor.h
-/usr/local/include/SEAL-3.7/seal/evaluator.h
-/usr/local/include/SEAL-3.7/seal/keygenerator.h
-
-```
-
-The "= delete" restrictions on the copy, source, constant assign, and assign methods were commented out in the private 
-section of each class. This will allow us to copy the encryptor and evaluator objects to our own CKKS encryption class. 
-The decryptor class was left as non-copyable because the non-copyable nature of this class is deeply embedded in SEAL. 
-The decryptor class will be instantiated everytime we wish to decrypt something.
-
 ## PyBind11 Integration with CMake
 The next step is to integrate SEAL and PyBind11 with CMake.
 
