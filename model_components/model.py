@@ -84,15 +84,21 @@ class Model:
 
         Parameters
         ----------
-        X: np.array
+        X: np.array or MatrixCiphertextContainer
             A numpy array of input data. This array has shape [N, M] where N is the number of data points and M is the
-            number of data features
+            number of data features.
+
+            If working in encrypted domain, this will be a MatrixCiphertextContainer that contains the encrypted data
+            object.
 
         Returns
         -------
-        out: np.array of floats
+        out: np.array of floats or MatrixCiphertextContainer
             A numpy array of shape [N,]. Each value is between 0 and 1 and represents the model's prediction on that
             particular X element.
+
+            If working in encrypted domain, this will be a MatrixCiphertextContainer that contains the encrypted output
+            data object.
         """
         out = X
         for layer in self.layers:
