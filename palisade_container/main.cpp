@@ -11,13 +11,18 @@ namespace py = pybind11;
 using namespace lbcrypto;
 
 CryptoContext<DCRTPoly> GenerateCryptoContext(RescalingTechnique rsTech, uint32_t multDepth, uint32_t scaleFactorBits, uint32_t batchSize, SecurityLevel securityLevel, uint32_t ringDimension){
-    return CryptoContextFactory<DCRTPoly>::genCryptoContextCKKS(multDepth, scaleFactorBits, batchSize, securityLevel, ringDimension,
+    CryptoContext<DCRTPoly> cc = CryptoContextFactory<DCRTPoly>::genCryptoContextCKKS(multDepth, scaleFactorBits, batchSize, securityLevel, ringDimension,
                                                                 rsTech);
+    cc->Enable(ENCRYPTION);
+    cc->Enable(SHE);
+    cc->Enable(LEVELEDSHE);
+    return cc;
 }
 
-LPKeyPair<Element> generate_keys(CryptoContext<DCRTPoly> cc){
+LPKeyPair<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>> GenerateKeys(const CryptoContext<DCRTPoly>& cc){
     return cc->KeyGen();
 }
+
 
 class PALISADE{
     RescalingTechnique rsTech = EXACTRESCALE;
@@ -27,20 +32,8 @@ class PALISADE{
     SecurityLevel securityLevel = HEStd_128_classic;
     uint32_t ringDimension = 0;
     CryptoContext<DCRTPoly> cc = GenerateCryptoContext(rsTech, multDepth, scaleFactorBits, batchSize, securityLevel, ringDimension);
-    auto keys
-public:
-    PALISADE();
+    LPKeyPair<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>> keys = GenerateKeys(cc);
 };
-
-PALISADE::PALISADE(){
-    cc =
-    cc->Enable(ENCRYPTION);
-    cc->Enable(SHE);
-    cc->Enable(LEVELEDSHE);
-
-    auto keys = cc->KeyGen();
-    cc->EvalMultKeyGen(keys.secretKey);
-}
 
 
 void palisade_example(){
