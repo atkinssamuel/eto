@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/palisade-release" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/palisade-release/third-party/cereal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/palisade-release/third-party/google-benchmark" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/palisade-release/third-party/google-test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/palisade-release/third-party/gperftools" vcs="Git" />
+  </component>
+</project>
