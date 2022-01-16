@@ -9,13 +9,13 @@ class Layer:
 
         Parameters
         ----------
-        X: np.array
-            The input array
+        X: np.array or C
+            The input array or the input palisade container object
 
         Returns
         -------
-        out: np.array
-            Some transformed output
+        out: np.array or C
+            Some transformed output that is either a numpy array or palisade container object
         """
         pass
 
@@ -27,10 +27,10 @@ class Layer:
         Parameters
         ----------
         E: np.array
-            The error signal
+            The error signal (either a numpy array or palisade container object)
 
         Returns
         -------
         E_hat: np.array
-            The updated error signal
+            The updated error signal (either a numpy array or palisade container object)
         """

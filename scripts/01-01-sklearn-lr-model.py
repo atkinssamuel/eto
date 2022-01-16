@@ -1,4 +1,4 @@
-from model_components.model import Model
+from components.model import Model
 from shared.eval import test_model_implementation
 from sklearn.linear_model import LogisticRegression
 

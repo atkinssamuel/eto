@@ -1,9 +1,9 @@
 import numpy as np
 
-from model_components.initialization_functions.zeros_init import ZerosInit
-from model_components.layers.layer_prototype import Layer
-from model_components.optimization_functions.gradient_descent import GradientDescent
-from model_components.initialization_functions.xavier_init import XavierInit
+from components.initialization_functions.zeros_init import ZerosInit
+from components.layers.layer_prototype import Layer
+from components.optimization_functions.gradient_descent import GradientDescent
+from components.initialization_functions.xavier_init import XavierInit
 
 
 class LinearLayer(Layer):
@@ -39,6 +39,8 @@ class LinearLayer(Layer):
         out: np.array
             A numpy array of shape [X.shape[1], output_dim] computed by executing X * W + b
         """
+        if type(X):
+            pass
         stacked_bias = self.stack_bias(X.shape[0])
         self.X = X
         return np.matmul(X, self.W) + stacked_bias

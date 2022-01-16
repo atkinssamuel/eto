@@ -1,19 +1,12 @@
 import math
 
-from model_components.initialization_functions.xavier_init import XavierInit
-from model_components.initialization_functions.zeros_init import ZerosInit
-from model_components.layers.relu_layer import ReLULayer
-from model_components.layers.sigmoid_approx_layer import SigmoidApprox
-from model_components.loss_functions.lse_loss import LSELoss
-from model_components.optimization_functions.gradient_descent import GradientDescent
+from components.initialization_functions import XavierInit
+from components.initialization_functions import ZerosInit
+from components.loss_functions.lse_loss import LSELoss
+from components.optimization_functions import GradientDescent
 from shared.eval import test_model_implementation
-from model_components.layers.rescaling_layer import RescalingLayer
-from model_components.layers.linear_layer import LinearLayer
-from model_components.layers.sigmoid_layer import SigmoidLayer
-from model_components.layers.squared_layer import SquaredLayer
-from model_components.loss_functions.bce_loss import BCELoss
-from model_components.optimization_functions.nesterov_accelerated_gd import NAG
-from model_components.model import Model
+from components.layers.linear_layer import LinearLayer
+from components.model import Model
 
 
 class ToyModel(Model):

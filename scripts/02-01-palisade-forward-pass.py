@@ -1,12 +1,13 @@
-from shared.eval import test_model_implementation
+from data.loader import load_sklearn_data
 from components.layers.sigmoid_layer import SigmoidLayer
+from components.loss_functions.lse_loss import LSELoss
 from components.layers.linear_layer import LinearLayer
-from components.loss_functions.bce_loss import BCELoss
-from components.optimization_functions import ClassicalMomentum
+from components.optimization_functions import NAG
 from components.model import Model
+from shared.eval import evaluate_model
 
 
-class MomentumLR(Model):
+class LSEModel(Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -15,13 +16,13 @@ class MomentumLR(Model):
             LinearLayer(
                 input_dim=X.shape[1],
                 output_dim=1,
-                optimization_fn=ClassicalMomentum,
+                optimization_fn=NAG,
                 lr=self.lr,
                 mu=self.mu,
             )
         )
         self.layers.append(SigmoidLayer())
-        self.loss_fn = BCELoss()
+        self.loss_fn = LSELoss()
 
 
 class_params = {
@@ -39,5 +40,23 @@ training_params = {
     "n_epochs": 50,
     "plot_losses": True,
 }
+(
+    X_train,
+    X_valid,
+    X_test,
+    y_train,
+    y_valid,
+    y_test,
+) = load_sklearn_data("classification", valid=True, split=[70, 10, 20], **class_params)
 
-test_model_implementation(MomentumLR(**training_params), **class_params)
+model = LSEModel(**training_params)
+model.fit(X_train, y_train)
+preds = model.predict(X_test)
+
+evaluate_model(preds, y_test, "classification")
+
+
+
+encrypted_preds = encrypted_predict(encrypted_X)
+
+print("Hello World")

@@ -1,23 +1,23 @@
-from model_components.optimization_functions.optimization_function_prototype import (
+from components.optimization_functions.optimization_function_prototype import (
     OptimizationFunction,
 )
 
 
-class ClassicalMomentum(OptimizationFunction):
+class NAG(OptimizationFunction):
     def __init__(self, lr=0.01, mu=0.01):
         super().__init__(lr, mu)
-        self.v = 0
+        self.phi = 0
 
     def update(self, parameter, gradient):
         """
         Returns the updated parameter given the parameter and the gradient of the parameter
 
-        Classical Momentum formulation:
+        https://jlmelville.github.io/mize/nesterov.html#NAG_in_practice
 
-        The parameter update is as follows:
+        Nesterov's Accelerated GD (NAG):
 
-        theta_t+1 = theta_t + v_t+1
-        v_t+1 = u * v_t - lr * dL/d(theta)
+        phi_t+1 = theta_t - e_t * grad
+        theta_t+1 = phi_t+1 + u * (phi_t+1 - phi_t)
 
         Parameters
         ----------
@@ -31,8 +31,7 @@ class ClassicalMomentum(OptimizationFunction):
         updated_parameter: np.array
             A numpy array of updated parameters (weights)
         """
-        # v_t+1 = u (self.mu) * v_t (self.v) - lr * dL/d(theta) (gradient)
-        self.v = self.mu * self.v - self.lr * gradient
-
-        # theta_t+1 = theta_t (parameter) + v_t+1 (self.v)
-        return parameter + self.v
+        phi_next = parameter - self.lr * gradient
+        parameter_next = phi_next + self.mu * (phi_next - self.phi)
+        self.phi = phi_next
+        return parameter_next

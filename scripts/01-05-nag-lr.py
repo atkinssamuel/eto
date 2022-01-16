@@ -1,9 +1,9 @@
 from shared.eval import test_model_implementation
-from model_components.layers.sigmoid_layer import SigmoidLayer
-from model_components.layers.linear_layer import LinearLayer
-from model_components.loss_functions.bce_loss import BCELoss
-from model_components.optimization_functions.nesterov_accelerated_gd import NAG
-from model_components.model import Model
+from components.layers.sigmoid_layer import SigmoidLayer
+from components.layers.linear_layer import LinearLayer
+from components.loss_functions.bce_loss import BCELoss
+from components.optimization_functions import NAG
+from components.model import Model
 
 
 class NAGLR(Model):

@@ -43,5 +43,5 @@ endif()
 
 ### ADD YOUR EXECUTABLE(s) HERE
 add_subdirectory(pybind11)
-pybind11_add_module(PALISADE main.cpp)
+pybind11_add_module(PALISADEContainer main.cpp)
 

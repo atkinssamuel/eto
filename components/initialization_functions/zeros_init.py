@@ -1,6 +1,6 @@
 import numpy as np
 
-from model_components.initialization_functions.initialization_function_prototype import Initializer
+from components.initialization_functions.initialization_function_prototype import Initializer
 
 
 class ZerosInit(Initializer):

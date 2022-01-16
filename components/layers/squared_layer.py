@@ -1,10 +1,9 @@
-from model_components.layers.layer_prototype import Layer
+import numpy as np
+
+from components.layers.layer_prototype import Layer
 
 
-class RescalingLayer(Layer):
-    def __init__(self, scaling_factor):
-        self.scaling_factor = scaling_factor
-
+class SquaredLayer(Layer):
     def forward(self, X):
         """
 
@@ -18,7 +17,8 @@ class RescalingLayer(Layer):
         out: np.array
             A numpy array of shape [X.shape[1], output_dim] computed by executing X * W + b
         """
-        return self.scaling_factor * X
+        self.X = X
+        return np.multiply(X, X)
 
     def backward(self, E):
         """
@@ -32,4 +32,4 @@ class RescalingLayer(Layer):
         E_hat: np.array of floats
             The updated error signal (dL/dX) passed on to the next layer
         """
-        return self.scaling_factor * E
+        return 2 * self.X * E

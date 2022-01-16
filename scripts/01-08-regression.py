@@ -1,10 +1,10 @@
-from model_components.initialization_functions.xavier_init import XavierInit
-from model_components.initialization_functions.zeros_init import ZerosInit
-from model_components.loss_functions.lse_loss import LSELoss
+from components.initialization_functions import XavierInit
+from components.initialization_functions import ZerosInit
+from components.loss_functions.lse_loss import LSELoss
 from shared.eval import test_model_implementation
-from model_components.layers.linear_layer import LinearLayer
-from model_components.optimization_functions.nesterov_accelerated_gd import NAG
-from model_components.model import Model
+from components.layers.linear_layer import LinearLayer
+from components.optimization_functions import NAG
+from components.model import Model
 
 
 class ToyModel(Model):

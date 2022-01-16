@@ -1,8 +1,7 @@
-from matplotlib import pyplot as plt
 from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
 from data.loader import load_sklearn_data
-from model_components.model import Model
+from components.model import Model
 
 
 def evaluate_model(preds, y_true, problem_type, model_title=None):

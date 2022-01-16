@@ -2,7 +2,7 @@ import math
 from abc import abstractmethod
 import numpy as np
 from matplotlib import pyplot as plt
-from model_components.loss_functions.bce_loss import BCELoss
+from components.loss_functions.bce_loss import BCELoss
 
 
 class Model:
@@ -80,7 +80,7 @@ class Model:
 
     def forward(self, X):
         """
-        Computes the forward pass for all of the model_components in self.model_components
+        Computes the forward pass for all of the plaintext in self.plaintext
 
         Parameters
         ----------
@@ -107,7 +107,7 @@ class Model:
 
     def backward(self, y):
         """
-        Computes the backward pass for all model_components in self.model_components
+        Computes the backward pass for all plaintext in self.plaintext
 
         Parameters
         ----------
@@ -139,7 +139,7 @@ class Model:
     @abstractmethod
     def init_layers(self, X):
         """
-        This method initializes the model_components to be used in the model
+        This method initializes the plaintext to be used in the model
 
         Parameters
         ----------

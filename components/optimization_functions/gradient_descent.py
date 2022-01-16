@@ -1,4 +1,4 @@
-from model_components.optimization_functions.optimization_function_prototype import (
+from components.optimization_functions.optimization_function_prototype import (
     OptimizationFunction,
 )
 
