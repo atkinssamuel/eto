@@ -132,3 +132,4 @@ dmypy.json
 SEAL/
 pybind11/
 cmake-build-debug/
+palisade-release/

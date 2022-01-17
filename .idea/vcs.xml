@@ -2,6 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/enc/palisade_container/palisade-release" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/enc/palisade_container/palisade-release/third-party/cereal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/enc/palisade_container/palisade-release/third-party/google-benchmark" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/enc/palisade_container/palisade-release/third-party/google-test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/enc/palisade_container/palisade-release/third-party/gperftools" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/palisade_container/palisade-release" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/palisade_container/palisade-release/third-party/cereal" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/palisade_container/palisade-release/third-party/google-benchmark" vcs="Git" />
