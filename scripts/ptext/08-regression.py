@@ -7,7 +7,7 @@ from src.components.optimization_functions.nesterov_accelerated_gd import NAG
 from src.components.model import Model
 
 
-class ToyModel(Model):
+class LinearRegression(Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -42,4 +42,4 @@ training_params = {
     "plot_losses": True,
 }
 
-test_model_implementation(ToyModel(**training_params), problem_type="regression", **data_params)
+test_model_implementation(LinearRegression(**training_params), problem_type="regression", **data_params)

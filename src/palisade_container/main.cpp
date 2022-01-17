@@ -30,10 +30,11 @@ PYBIND11_MODULE(PALISADEContainer, handle){
             .def(py::init())
             .def("encrypt_vector", &PALISADE::encrypt_vector)
             .def("decrypt_vector", &PALISADE::decrypt_vector)
-            .def("vector_hadamard", &PALISADE::vector_hadamard)
-            .def("vector_dot", &PALISADE::vector_dot)
-            .def("vector_add", &PALISADE::vector_add)
-            .def("vector_sum", &PALISADE::vector_sum);
+            .def("v_hadamard", &PALISADE::v_hadamard) // Vector-Vector Operations
+            .def("v_dot", &PALISADE::v_dot)
+            .def("v_add", &PALISADE::v_add)
+            .def("v_sum", &PALISADE::v_sum)
+            .def("vc_dot", &PALISADE::vc_dot);
 //            .def("matrix_add", &PALISADE::matrix_add);
 
     py::class_<PALISADEVector>(handle, "PALISADEVector");

@@ -1,7 +1,7 @@
 from sklearn.metrics import classification_report, r2_score, mean_squared_error
 
-from autograd.loader import load_sklearn_data
-from autograd.components.model import Model
+from src.loader import load_sklearn_data
+from src.components.model import Model
 
 
 def evaluate_model(preds, y_true, problem_type, model_title=None):

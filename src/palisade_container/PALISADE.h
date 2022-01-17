@@ -41,11 +41,15 @@ public:
 
     PALISADEVector encrypt_vector(const vector<double> &vector);
     vector<double> decrypt_vector(const PALISADEVector &pv);
-    PALISADEVector vector_hadamard(const PALISADEVector &pv1, const PALISADEVector &pv2);
-    PALISADEVector vector_dot(const PALISADEVector &pv1, const PALISADEVector &pv2);
-    PALISADEVector vector_add(const PALISADEVector &pv1, const PALISADEVector &pv2);
-    PALISADEVector vector_sum(const PALISADEVector &pv);
 
+    // Vector-Vector Operations:
+    PALISADEVector v_hadamard(const PALISADEVector &pv1, const PALISADEVector &pv2);
+    PALISADEVector v_dot(const PALISADEVector &pv1, const PALISADEVector &pv2);
+    PALISADEVector v_add(const PALISADEVector &pv1, const PALISADEVector &pv2);
+    PALISADEVector v_sum(const PALISADEVector &pv);
+
+    // Vector-Constant Operations:
+    PALISADEVector vc_dot(const PALISADEVector &pv, vector<double> cv);
 //    PALISADERowMatrix encrypt_row_matrix(const vector<vector<double>> &matrix);
 //    vector<vector<double>> decrypt_row_matrix(const PALISADERowMatrix &prm);
 };
@@ -61,20 +65,27 @@ vector<double> PALISADE::decrypt_vector(const PALISADEVector& pv){
     return splice_vector(x, 0, pv.size);
 }
 
-PALISADEVector PALISADE::vector_hadamard(const PALISADEVector& pv1, const PALISADEVector& pv2){
+
+// Vector-Vector Operations:
+PALISADEVector PALISADE::v_hadamard(const PALISADEVector& pv1, const PALISADEVector& pv2){
     return PALISADEVector(cc->EvalMult(pv1.ciphertext, pv2.ciphertext), pv1.size);
 }
 
-PALISADEVector PALISADE::vector_dot(const PALISADEVector& pv1, const PALISADEVector& pv2){
+PALISADEVector PALISADE::v_dot(const PALISADEVector& pv1, const PALISADEVector& pv2){
     return PALISADEVector(cc->EvalInnerProduct(pv1.ciphertext, pv2.ciphertext, pv1.size), 1);
 }
 
-PALISADEVector PALISADE::vector_add(const PALISADEVector& pv1, const PALISADEVector& pv2){
+PALISADEVector PALISADE::v_add(const PALISADEVector& pv1, const PALISADEVector& pv2){
     return PALISADEVector(cc->EvalAdd(pv1.ciphertext, pv2.ciphertext), pv1.size);
 }
 
-PALISADEVector PALISADE::vector_sum(const PALISADEVector &pv){
+PALISADEVector PALISADE::v_sum(const PALISADEVector &pv){
     return PALISADEVector(cc->EvalSum(pv.ciphertext, pv.size), 1);
+}
+
+// Vector-Constant Operations:
+PALISADEVector PALISADE::vc_dot(const PALISADEVector& pv, const vector<double> cv){
+    return PALISADEVector(cc->EvalInnerProduct(pv.ciphertext, cc->MakeCKKSPackedPlaintext(cv), pv.size), 1);
 }
 
 #endif //ETO_PALISADE_H
