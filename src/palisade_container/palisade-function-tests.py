@@ -13,7 +13,7 @@ pv1 = palisade.encrypt_vector(x1)
 pv2 = palisade.encrypt_vector(x2)
 
 print("\nnp.dot:", np.dot(x1, x2))
-print("v_dot:", palisade.decrypt_vector(palisade.v_dot(pv1, pv2)))
+print("v_dot:", palisade.decrypt_vector(palisade.v_dot(pv1, pvs2)))
 
 print("\nnp.multiply:", np.multiply(x1, x2))
 print("v_hadamard:", palisade.decrypt_vector(palisade.v_hadamard(pv1, pv2)))

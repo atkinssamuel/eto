@@ -7,7 +7,6 @@
 #include <pybind11/numpy.h>
 
 #include <utility>
-#include "palisade.h"
 #include "PALISADE.h"
 
 namespace py = pybind11;
@@ -15,7 +14,7 @@ using namespace lbcrypto;
 
 
 void palisade_example(){
-    PALISADE palisade = PALISADE();
+    PALISADE palisade = PALISADE(64);
     vector<double> x = {1.0, 2.0, 3.0, 4.0};
 
     vector<PALISADEVector> pm;
@@ -27,7 +26,7 @@ void palisade_example(){
 // C++ in Python the Easy Way! #pybind11 https://www.youtube.com/watch?v=_5T70cAXDJ0
 PYBIND11_MODULE(PALISADEContainer, handle){
     py::class_<PALISADE>(handle, "PALISADE")
-            .def(py::init())
+            .def(py::init<uint32_t>())
             .def("encrypt_vector", &PALISADE::encrypt_vector)
             .def("decrypt_vector", &PALISADE::decrypt_vector)
             .def("v_hadamard", &PALISADE::v_hadamard) // Vector-Vector Operations

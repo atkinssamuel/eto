@@ -5,7 +5,7 @@
 #ifndef ETO_PALISADE_H
 #define ETO_PALISADE_H
 
-
+#include "palisade.h"
 #include "PALISADEVector.h"
 #include "utils.h"
 
@@ -34,10 +34,10 @@ class PALISADE {
     SecurityLevel securityLevel = HEStd_128_classic;
     uint32_t ringDimension = 0;
 public:
-    uint32_t batchSize = 8;
-    CryptoContext<DCRTPoly> cc = GenerateCryptoContext(rsTech, multDepth, scaleFactorBits, batchSize, securityLevel,
-                                                       ringDimension);
-    LPKeyPair<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>> keys = GenerateKeys(cc);
+    PALISADE(uint32_t bSize);
+    uint32_t batchSize;
+    CryptoContext<DCRTPoly> cc;
+    LPKeyPair<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>> keys;
 
     PALISADEVector encrypt_vector(const vector<double> &vector);
     vector<double> decrypt_vector(const PALISADEVector &pv);
@@ -54,6 +54,12 @@ public:
 //    vector<vector<double>> decrypt_row_matrix(const PALISADERowMatrix &prm);
 };
 
+PALISADE::PALISADE(uint32_t bSize){
+    batchSize = bSize;
+    cc = GenerateCryptoContext(rsTech, multDepth, scaleFactorBits, batchSize, securityLevel, ringDimension);
+    keys = GenerateKeys(cc);
+}
+
 PALISADEVector PALISADE::encrypt_vector(const vector<double>& vector){
     return PALISADEVector(cc->Encrypt(keys.publicKey, cc->MakeCKKSPackedPlaintext(vector)), int(vector.size()));
 }
@@ -68,6 +74,7 @@ vector<double> PALISADE::decrypt_vector(const PALISADEVector& pv){
 
 // Vector-Vector Operations:
 PALISADEVector PALISADE::v_hadamard(const PALISADEVector& pv1, const PALISADEVector& pv2){
+    cc->EvalFastRotation()
     return PALISADEVector(cc->EvalMult(pv1.ciphertext, pv2.ciphertext), pv1.size);
 }
 
