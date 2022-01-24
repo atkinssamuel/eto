@@ -7,11 +7,11 @@ import numpy as np
 from src.palisade.ops import PALISADEOperations
 from src.shared.timer import Timer
 
-mat_size = 500
+mat_size = 8192
 X = np.random.rand(mat_size, mat_size)
 v = np.random.rand(mat_size)
 
-ops = PALISADEOperations(mat_size, v=False)
+ops = PALISADEOperations(100, v=True)
 v_enc = ops.palisade.encrypt_vector(v)
 
 timer = Timer()

@@ -11,6 +11,8 @@ v = np.array([1, 5, 9])
 X_enc = ops.enc_rm(X)
 X_dec = ops.dec_rm(X_enc)
 
+print("np")
+
 print("X:", X)
 print("X_dec:", X_dec)
 

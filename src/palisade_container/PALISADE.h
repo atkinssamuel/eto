@@ -36,6 +36,9 @@ class PALISADE {
 public:
     PALISADE(uint32_t bSize);
     uint32_t batchSize;
+    shared_ptr<vector<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>>> cPrecomp;
+    uint32_t N;
+    uint32_t M;
     CryptoContext<DCRTPoly> cc;
     LPKeyPair<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>> keys;
 
@@ -47,6 +50,8 @@ public:
     PALISADEVector v_dot(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_add(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_sum(const PALISADEVector &pv);
+    void set_rotation_vector(const PALISADEVector &pv);
+    PALISADEVector v_rot(const PALISADEVector &pv, int rot);
 
     // Vector-Constant Operations:
     PALISADEVector vc_dot(const PALISADEVector &pv, vector<double> cv);
@@ -58,6 +63,8 @@ PALISADE::PALISADE(uint32_t bSize){
     batchSize = bSize;
     cc = GenerateCryptoContext(rsTech, multDepth, scaleFactorBits, batchSize, securityLevel, ringDimension);
     keys = GenerateKeys(cc);
+    N = cc->GetRingDimension();
+    M = 2 * N;
 }
 
 PALISADEVector PALISADE::encrypt_vector(const vector<double>& vector){
@@ -68,13 +75,13 @@ vector<double> PALISADE::decrypt_vector(const PALISADEVector& pv){
     Plaintext result;
     cc->Decrypt(keys.secretKey, pv.ciphertext, &result);
     vector<double> x = result->GetRealPackedValue();
+    result->SetLength(batchSize);
     return splice_vector(x, 0, pv.size);
 }
 
 
 // Vector-Vector Operations:
 PALISADEVector PALISADE::v_hadamard(const PALISADEVector& pv1, const PALISADEVector& pv2){
-    cc->EvalFastRotation()
     return PALISADEVector(cc->EvalMult(pv1.ciphertext, pv2.ciphertext), pv1.size);
 }
 
@@ -87,7 +94,21 @@ PALISADEVector PALISADE::v_add(const PALISADEVector& pv1, const PALISADEVector& 
 }
 
 PALISADEVector PALISADE::v_sum(const PALISADEVector &pv){
+    auto cprecomp =   cc->EvalFastRotationPrecompute(pv.ciphertext);
     return PALISADEVector(cc->EvalSum(pv.ciphertext, pv.size), 1);
+}
+
+void PALISADE::set_rotation_vector(const PALISADEVector &pv){
+    vector<int> index_list;
+    for (int i = 1; i < 8192; i++){
+        index_list.push_back(i);
+    }
+    cc->EvalAtIndexKeyGen(keys.secretKey, index_list);
+    cPrecomp = cc->EvalFastRotationPrecompute(pv.ciphertext);
+}
+
+PALISADEVector PALISADE::v_rot(const PALISADEVector &pv, int rot){
+    return PALISADEVector(cc->EvalFastRotation(pv.ciphertext, rot, M, cPrecomp), pv.size);
 }
 
 // Vector-Constant Operations:

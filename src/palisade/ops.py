@@ -8,6 +8,7 @@ class PALISADEOperations:
         self.palisade = PALISADE(batch_size)
         self.checkpoint_frequency = checkpoint_frequency
         self.v = v
+        self.vec_size = 8192
 
     def enc_rm(self, X: np.array, v: bool = False):
         """
@@ -62,7 +63,7 @@ class PALISADEOperations:
 
     def hlt(self, cm: np.array, vector: object, v: bool = False):
         """
-        Homomorphic linear transform algorithm mentioned in
+        Homomorphic linear transform algorithm mentioned in 2.3 of https://eprint.iacr.org/2018/1041.pdf
 
         Parameters
         ----------
@@ -77,6 +78,20 @@ class PALISADEOperations:
         -------
 
         """
+        result = None
+        U = np.zeros(shape=(self.vec_size, self.vec_size))
+        U[:cm.shape[0], :cm.shape[1]] = cm
+        print("Setting rotation vector")
+        self.palisade.set_rotation_vector(vector)
+
+        for l in range(U.shape[0]):
+            print(f"Row {l}")
+            comp = self.palisade.vc_dot(self.palisade.v_rot(vector, l), self.u_l(U, l))
+            if result is None:
+                result = comp
+            else:
+                result = self.palisade.v_add(result, comp)
+        return result
 
     def cm_v_mult(self, cm: np.array, vector: object, v: bool = False):
         """
@@ -144,3 +159,28 @@ class PALISADEOperations:
                 print(prog)
             else:
                 print(label + " " + prog)
+
+    @staticmethod
+    def u_l(U: np.array, l: int):
+        """
+        Computes the l-th diagonal vector
+
+        Parameters
+        ----------
+        U: np.array
+            Input matrix
+        l: int
+            The diagonal vector to be computed
+
+        Returns
+        -------
+        u_l: np.array
+            l-th diagonal vector
+        """
+        u = []
+        col = l % U.shape[0]
+        for row in range(U.shape[0]):
+            u.append(U[row, col])
+            col += 1
+            col = col % U.shape[0]
+        return np.array(u)

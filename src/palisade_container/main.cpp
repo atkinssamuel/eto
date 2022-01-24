@@ -33,6 +33,8 @@ PYBIND11_MODULE(PALISADEContainer, handle){
             .def("v_dot", &PALISADE::v_dot)
             .def("v_add", &PALISADE::v_add)
             .def("v_sum", &PALISADE::v_sum)
+            .def("set_rotation_vector", &PALISADE::set_rotation_vector)
+            .def("v_rot", &PALISADE::v_rot)
             .def("vc_dot", &PALISADE::vc_dot);
 //            .def("matrix_add", &PALISADE::matrix_add);
 
