@@ -25,11 +25,12 @@ void palisade_example(){
 
 // C++ in Python the Easy Way! #pybind11 https://www.youtube.com/watch?v=_5T70cAXDJ0
 PYBIND11_MODULE(PALISADEContainer, handle){
-    py::class_<PALISADE>(handle, "PALISADE")
+    py::class_<PALISADE>(handle, "PALISADEContainer")
             .def(py::init<uint32_t>())
-            .def("encrypt_vector", &PALISADE::encrypt_vector, py::arg("vector"), py::arg("wrapped") = true)
-            .def("decrypt_vector", &PALISADE::decrypt_vector, py::arg("pv"), py::arg("decimal_places") = 3)
+            .def("encrypt_vector", &PALISADE::encrypt_vector)
+            .def("decrypt_vector", &PALISADE::decrypt_vector)
             .def("v_hadamard", &PALISADE::v_hadamard) // Vector-Vector Operations
+            .def("set_rotation_vector_indices", &PALISADE::set_rotation_vector_indices)
             .def("v_dot", &PALISADE::v_dot)
             .def("v_add", &PALISADE::v_add)
             .def("v_sum", &PALISADE::v_sum)

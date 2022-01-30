@@ -50,7 +50,7 @@ public:
     PALISADEVector v_dot(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_add(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_sum(const PALISADEVector &pv);
-    void set_rotation_vector(const PALISADEVector &pv);
+    void set_rotation_vector_indices(const PALISADEVector &pv, vector<int> index_list);
     PALISADEVector v_rot(const PALISADEVector &pv, int rot);
 
     // Vector-Constant Operations:
@@ -68,7 +68,7 @@ PALISADE::PALISADE(uint32_t bSize){
     M = 2 * N;
 }
 
-PALISADEVector PALISADE::encrypt_vector(vector<double>& vector, bool wrapped = true){
+PALISADEVector PALISADE::encrypt_vector(vector<double>& vector, bool wrapped){
     int unpadded_size = vector.size();
     int padded_size = next_2_power(unpadded_size);
     if (wrapped) {
@@ -87,7 +87,7 @@ PALISADEVector PALISADE::encrypt_vector(vector<double>& vector, bool wrapped = t
     return PALISADEVector(cc->Encrypt(keys.publicKey, cc->MakeCKKSPackedPlaintext(vector)), unpadded_size);
 }
 
-vector<double> PALISADE::decrypt_vector(const PALISADEVector& pv, int decimal_places = 3){
+vector<double> PALISADE::decrypt_vector(const PALISADEVector& pv, int decimal_places){
     Plaintext result;
     cc->Decrypt(keys.secretKey, pv.ciphertext, &result);
     vector<double> x = result->GetRealPackedValue();
@@ -120,14 +120,12 @@ PALISADEVector PALISADE::v_sum(const PALISADEVector &pv){
     auto cprecomp =   cc->EvalFastRotationPrecompute(pv.ciphertext);
     return PALISADEVector(cc->EvalSum(pv.ciphertext, pv._size), 1);
 }
-
-PALISADEVector PALISADE::v_rot(const PALISADEVector &pv, int rot){
-    vector<int> index_list;
-    for (int i = 1; i < 8192; i++){
-        index_list.push_back(i);
-    }
+void PALISADE::set_rotation_vector_indices(const PALISADEVector &pv, vector<int> index_list){
     cc->EvalAtIndexKeyGen(keys.secretKey, index_list);
     cPrecomp = cc->EvalFastRotationPrecompute(pv.ciphertext);
+}
+
+PALISADEVector PALISADE::v_rot(const PALISADEVector &pv, int rot){
     return PALISADEVector(cc->EvalFastRotation(pv.ciphertext, rot, M, cPrecomp), pv._size);
 }
 

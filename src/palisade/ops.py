@@ -5,7 +5,7 @@ import numpy as np
 
 class PALISADEOperations:
     def __init__(self, batch_size, checkpoint_frequency=250, v=True):
-        self.palisade = PALISADE(batch_size)
+        self.palisade = PALISADEContainer(batch_size)
         self.checkpoint_frequency = checkpoint_frequency
         self.v = v
         self.vec_size = 8192
