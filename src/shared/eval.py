@@ -23,14 +23,20 @@ def evaluate_model(preds, y_true, problem_type, model_title=None):
 
     """
     if problem_type == "classification":
-        print(f"Evaluating Model:" if model_title is None else f"Evaluating {model_title}:")
+        print(
+            f"Evaluating Model:"
+            if model_title is None
+            else f"Evaluating {model_title}:"
+        )
         print(classification_report(y_true, preds))
     elif problem_type == "regression":
         print("Mean Squared Error: %.2f" % mean_squared_error(y_true, preds))
         print("Coefficient of Determination: [0 | %.2f | 1]" % r2_score(y_true, preds))
 
 
-def test_model_implementation(model: Model, problem_type="classification", **class_params):
+def test_model_implementation(
+    model: Model, problem_type="classification", **class_params
+):
     """
     The purpose of this function is to test the implementation of a class that inherits the Model object
 

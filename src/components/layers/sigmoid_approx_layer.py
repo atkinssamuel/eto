@@ -15,8 +15,10 @@ class SigmoidApprox(Layer):
             5.4302,
             -2.50739,
         )
-        self.unsupported_exception_str = "The Sigmoid approximation layer was instantiated with an unsupported " \
-                                         "degree. Specify either degree 3 or degree 7 for this layer."
+        self.unsupported_exception_str = (
+            "The Sigmoid approximation layer was instantiated with an unsupported "
+            "degree. Specify either degree 3 or degree 7 for this layer."
+        )
 
     def third_deg_approx(self, x):
         return self.a_0 + self.a_1 * x / 8 + self.a_3 * np.power((x / 8), 3)

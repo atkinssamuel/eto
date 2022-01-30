@@ -80,7 +80,7 @@ class PALISADEOperations:
         """
         result = None
         U = np.zeros(shape=(self.vec_size, self.vec_size))
-        U[:cm.shape[0], :cm.shape[1]] = cm
+        U[: cm.shape[0], : cm.shape[1]] = cm
         print("Setting rotation vector")
         self.palisade.set_rotation_vector(vector)
 
@@ -153,7 +153,7 @@ class PALISADEOperations:
         """
         Checkpoints the current loop iteration by printing the loop progress
         """
-        if (self.v or v) and (i == 0 or (i+1) % self.checkpoint_frequency == 0):
+        if (self.v or v) and (i == 0 or (i + 1) % self.checkpoint_frequency == 0):
             prog = f"{i+1}/{size} ({round(100 * (i+1) / size)}%)"
             if label is None:
                 print(prog)

@@ -60,7 +60,9 @@ def load_sklearn_data(
     elif problem_type == "regression":
         X, y = make_regression(**data_params)
     else:
-        raise Exception("Incorrect problem type. Supported problem types are \"classification\" and \"regression\"")
+        raise Exception(
+            'Incorrect problem type. Supported problem types are "classification" and "regression"'
+        )
 
     if split is None:
         if valid is False:

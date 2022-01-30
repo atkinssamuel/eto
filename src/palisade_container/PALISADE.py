@@ -3,9 +3,14 @@ from build.PALISADEContainer import *
 
 
 class PALISADE:
-    def __init__(self, batch_size=10):
+    def __init__(self, mult_depth=5, scale_factor_bits=50, batch_size=10):
+        self.mult_depth = mult_depth
+        self.scale_factor_bits = scale_factor_bits
         self.batch_size = batch_size
-        self._palisade = PALISADEContainer(self.batch_size)
+        self._palisade = PALISADEContainer(
+            self.mult_depth, self.scale_factor_bits, self.batch_size
+        )
+        self.embedding_size = self._palisade.embedding_size
 
     def encrypt_vector(self, vector: np.array, wrapped: bool = True):
         """
@@ -141,7 +146,9 @@ class PALISADE:
             A PALISADEVector object with the rotated vector
         """
         if type(rot) is not int:
-            raise Exception("rot input argument to palisade.v_rot must be an integer value")
+            raise Exception(
+                "rot input argument to palisade.v_rot must be an integer value"
+            )
         return self._palisade.v_rot(pv, rot)
 
     def vc_dot(self, pv: object, cv: list[int or float] or np.array):

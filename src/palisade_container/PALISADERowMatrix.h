@@ -6,14 +6,15 @@
 #define ETO_PALISADEROWMATRIX_H
 
 
-class PALISADERowMatrix{
+class PALISADERowMatrix {
 public:
     vector<PALISADEVector> prm;
 
     PALISADERowMatrix(vector<PALISADEVector> palisade_row_matrix);
 };
 
-PALISADERowMatrix::PALISADERowMatrix(vector<PALISADEVector> palisade_row_matrix){
+PALISADERowMatrix::PALISADERowMatrix(vector<PALISADEVector>
+                                     palisade_row_matrix) {
     prm = palisade_row_matrix;
 }
 

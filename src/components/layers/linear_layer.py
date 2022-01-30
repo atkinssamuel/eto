@@ -15,7 +15,7 @@ class LinearLayer(Layer):
         mu=0.01,
         optimization_fn=GradientDescent,
         weight_init_fn=XavierInit,
-        bias_init_fn=ZerosInit
+        bias_init_fn=ZerosInit,
     ):
         self.X = None
         self.input_dim = input_dim

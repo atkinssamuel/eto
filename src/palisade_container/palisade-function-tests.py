@@ -5,6 +5,7 @@ palisade = PALISADE()
 
 np.random.seed(0)
 
+
 def left_shift(m: np.array, l: int):
     l = l % len(m)
     return np.hstack((m[l:], m[:l]))
