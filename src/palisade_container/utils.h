@@ -19,4 +19,21 @@ vector<double> splice_vector(vector<double> x, int start, int end){
     return vec;
 }
 
+double round_double(double value, int decimal_places){
+    const double multiplier = std::pow(10.0, decimal_places);
+    return std::ceil(value * multiplier) / multiplier;
+}
+
+int next_2_power(int n){
+    int p = 1;
+    if (n && !(n & (n - 1))){
+        return n;
+    }
+    else {
+        while (p < n)
+            p <<= 1;
+        return p;
+    }
+}
+
 #endif //ETO_UTILS_H
