@@ -20,17 +20,22 @@ PYBIND11_MODULE(PALISADEContainer, handle) {
     .def("decrypt_vector", &PALISADE::decrypt_vector)
     .def_property_readonly("embedding_size", &PALISADE::embedding_size)
     .def("v_hadamard", &PALISADE::v_hadamard) // Vector-Vector Operations
-    .def("set_rotation_vector_indices", &PALISADE::set_rotation_vector_indices)
+    .def("set_rotation_indices", &PALISADE::set_rotation_indices)
     .def("v_dot", &PALISADE::v_dot)
     .def("v_add", &PALISADE::v_add)
     .def("v_sum", &PALISADE::v_sum)
     .def("v_rot", &PALISADE::v_rot)
-    .def("vc_dot", &PALISADE::vc_dot);
+    .def("vc_dot", &PALISADE::vc_dot)
+    .def("cmv_mult", &PALISADE::cmv_mult);
 //            .def("matrix_add", &PALISADE::matrix_add);
+
+    py::class_<PALISADEMatrix>(handle, "PALISADEMatrix")
+    .def_property_readonly("row_wise", &PALISADEMatrix::row_wise);
 
     py::class_<PALISADEVector>(handle, "PALISADEVector")
     .def_property_readonly("size", &PALISADEVector::size)
     .def_property_readonly("unpadded_size", &PALISADEVector::unpadded_size);
+
 
 
     handle.doc() = "pybind11";

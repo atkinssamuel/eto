@@ -9,12 +9,12 @@ done;
 black_formatter="black ."
 cd ../
 $black_formatter
-cd palisade_container
+cd palisade_container || exit
 
 # building cpp solution
 rm -r build
 mkdir build
-cd build
+cd build || exit
 cmake ..
 make
 cd ..

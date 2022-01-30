@@ -6,7 +6,7 @@
 #define ETO_PALISADE_H
 
 #include "palisade.h"
-#include "PALISADEVector.h"
+#include "PALISADEMatrix.h"
 
 using namespace lbcrypto;
 
@@ -49,6 +49,9 @@ public:
     // Property Definitions:
     int embedding_size();
 
+    // Matrix Encryption:
+//    PALISADEMatrix encrypt_matrix(vector<vector<double>> matrix, bool row_wise);
+
     // Vector Encryption:
     PALISADEVector encrypt_vector(vector<double> &vector, bool wrapped);
     vector<double> decrypt_vector(const PALISADEVector &pv, int decimal_places);
@@ -58,12 +61,17 @@ public:
     PALISADEVector v_dot(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_add(const PALISADEVector &pv1, const PALISADEVector &pv2);
     PALISADEVector v_sum(const PALISADEVector &pv);
-    void set_rotation_vector_indices(const PALISADEVector &pv,
-                                     vector<int> index_list);
+    void set_rotation_indices(const PALISADEVector &pv,
+                              vector<int> index_list);
     PALISADEVector v_rot(const PALISADEVector &pv, int rot);
 
     // Vector-Constant Operations:
     PALISADEVector vc_dot(const PALISADEVector &pv, vector<double> cv);
+
+    // Constant-Matrix Vector Operations:
+    PALISADEVector cmv_mult(const vector<vector<double>> &cm,
+                            const PALISADEVector &pv, int algo);
+
 //    PALISADERowMatrix encrypt_row_matrix(const vector<vector<double>> &matrix);
 //    vector<vector<double>> decrypt_row_matrix(const PALISADERowMatrix &prm);
 };
@@ -85,6 +93,7 @@ PALISADE::PALISADE(uint32_t mult_depth, uint32_t scaleFactorBits,
 int PALISADE::embedding_size() {
     return int(_embedding_size);
 }
+
 
 PALISADEVector PALISADE::encrypt_vector(vector<double>& vector, bool wrapped) {
     int unpadded_size = vector.size();
@@ -143,8 +152,8 @@ PALISADEVector PALISADE::v_sum(const PALISADEVector &pv) {
     return PALISADEVector(cc->EvalSum(pv.ciphertext, pv._size), 1);
 }
 
-void PALISADE::set_rotation_vector_indices(const PALISADEVector &pv,
-        vector<int> index_list) {
+void PALISADE::set_rotation_indices(const PALISADEVector &pv,
+                                    vector<int> index_list) {
     cc->EvalAtIndexKeyGen(keys.secretKey, index_list);
     cPrecomp = cc->EvalFastRotationPrecompute(pv.ciphertext);
 }
@@ -160,5 +169,43 @@ PALISADEVector PALISADE::vc_dot(const PALISADEVector& pv,
     return PALISADEVector(cc->EvalInnerProduct(pv.ciphertext,
                           cc->MakeCKKSPackedPlaintext(cv), pv._size), 1);
 }
+
+// Constant-Matrix Vector Operations:
+PALISADEVector PALISADE::cmv_mult(const vector<vector<double>> &cm,
+                                  const PALISADEVector &pv, int algo) {
+    if (algo == 0) {
+        // Square matrix multiply
+        // Need N-1 rotations for an N dimensional input vector
+        // TODO: need to pad matrix so that it has the correct shape for the matrix multiply
+        // Setting the rotation indices for the vector rotation permutations
+        vector<int> index_list;
+        for (int i = 1; i < pv._size; i++)
+            index_list.push_back(i);
+        set_rotation_indices(pv, index_list);
+
+        // Rotating the initial vector to obtain all N vector permutations and extracting the diagonal
+        // elements from the input matrix
+        vector<PALISADEVector> vector_permutations;
+        vector_permutations.push_back(pv);
+
+        vector<vector<double>> diagonal_elements;
+        diagonal_elements.push_back(lth_diagonal(cm, 0));
+
+        for (int i = 1; i < pv._size; i++) {
+            vector_permutations.push_back(v_rot(pv, i));
+            diagonal_elements.push_back(lth_diagonal(cm, i));
+        }
+
+        std::cout << "Input Matrix:\n";
+        print_matrix(cm);
+
+        std::cout << "Diagonal Elements:\n";
+        print_matrix(diagonal_elements);
+
+
+    }
+    return pv;
+}
+
 
 #endif //ETO_PALISADE_H

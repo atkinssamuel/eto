@@ -30,7 +30,7 @@ class PALISADE:
         """
         return self._palisade.encrypt_vector(vector, wrapped)
 
-    def decrypt_vector(self, pv: object, decimal_places: int):
+    def decrypt_vector(self, pv: object, decimal_places: int = 3):
         """
         Decrypts the supplied PALISADEVector object and returns a rounded numpy array with the desired decimal places
 
@@ -167,3 +167,36 @@ class PALISADE:
             The result of the dot product returned as a PALISADEVector object
         """
         return self._palisade.vc_dot(pv, cv)
+
+    def cmv_mult(self, cm: np.array, pv: object, algo: int = None):
+        """
+        Multiplies a constant matrix with a PALISADEVector object
+
+        Parameters
+        ----------
+        cm: np.array or list
+            The input matrix
+        pv: object
+            The PALISADEVector object that will be multiplied by the input matrix
+        algo: int (optional)
+            The algorithm to be used
+
+            0: square
+            1: lanky (more rows than columns)
+            2: squat (more columns than rows)
+
+        Returns
+        -------
+        pv_res: object
+            The result of the matrix multiply
+        """
+        if type(cm) is list:
+            cm = np.array(cm)
+        if (algo is not None) and (type(algo) is int) and (0 < algo <= 2):
+            return self._palisade.cmv_mult(cm, pv, algo)
+        algo = 2
+        if cm.shape[0] == cm.shape[1]:
+            algo = 0
+        elif cm.shape[0] > cm.shape[1]:
+            algo = 1
+        return self._palisade.cmv_mult(cm, pv, algo)
