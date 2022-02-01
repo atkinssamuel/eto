@@ -19,7 +19,7 @@ vector<double> splice_vector(vector<double> x, int start, int end) {
 
 double round_double(double value, int decimal_places) {
     const double multiplier = std::pow(10.0, decimal_places);
-    return std::ceil(value * multiplier) / multiplier;
+    return std::round(value * multiplier) / multiplier;
 }
 
 int next_2_power(int n) {
@@ -70,6 +70,13 @@ void print_vector(vector<double> v) {
     for (int i = 0; i < int(v.size()); i++)
         std::cout << v[i] << " ";
     std::cout << std::endl;
+}
+
+vector<double> double_vector(vector<double> vector){
+    for (int i = 0; i < int(vector.size()); i++){
+        vector.push_back(vector[i]);
+    }
+    return vector;
 }
 
 #endif //ETO_UTILS_H

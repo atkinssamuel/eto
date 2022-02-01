@@ -11,9 +11,9 @@ def left_shift(m: np.array, l: int):
     return np.hstack((m[l:], m[:l]))
 
 
-cm = [[np.random.randint(0, 5) for i in range(3)] for j in range(3)]
-x1 = [1, 2, 3]
-x2 = [3, 4, 5]
+cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(4)]
+x1 = [1, 2, 3, 4]
+x2 = [3, 4, 5, 6]
 
 pv1 = palisade.encrypt_vector(x1)
 pv2 = palisade.encrypt_vector(x2)

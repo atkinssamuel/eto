@@ -66,11 +66,11 @@ public:
     PALISADEVector v_rot(const PALISADEVector &pv, int rot);
 
     // Vector-Constant Operations:
-    PALISADEVector vc_dot(const PALISADEVector &pv, vector<double> cv);
+    PALISADEVector vc_dot(const PALISADEVector &pv, const vector<double> &cv);
+    PALISADEVector vc_hadamard(const PALISADEVector &pv, const vector<double> &cv);
 
     // Constant-Matrix Vector Operations:
-    PALISADEVector cmv_mult(const vector<vector<double>> &cm,
-                            const PALISADEVector &pv, int algo);
+    PALISADEVector cmv_mult(vector<vector<double>> cm, PALISADEVector pv);
 
 //    PALISADERowMatrix encrypt_row_matrix(const vector<vector<double>> &matrix);
 //    vector<vector<double>> decrypt_row_matrix(const PALISADERowMatrix &prm);
@@ -164,16 +164,31 @@ PALISADEVector PALISADE::v_rot(const PALISADEVector &pv, int rot) {
 }
 
 // Vector-Constant Operations:
-PALISADEVector PALISADE::vc_dot(const PALISADEVector& pv,
-                                const vector<double> cv) {
+PALISADEVector PALISADE::vc_dot(const PALISADEVector &pv,
+                                const vector<double> &cv) {
     return PALISADEVector(cc->EvalInnerProduct(pv.ciphertext,
                           cc->MakeCKKSPackedPlaintext(cv), pv._size), 1);
 }
 
+PALISADEVector PALISADE::vc_hadamard(const PALISADEVector &pv,
+                                     const vector<double> &cv){
+    return PALISADEVector(cc->EvalMult(pv.ciphertext, cc->MakeCKKSPackedPlaintext(cv)), pv._size);
+}
+
 // Constant-Matrix Vector Operations:
-PALISADEVector PALISADE::cmv_mult(const vector<vector<double>> &cm,
-                                  const PALISADEVector &pv, int algo) {
-    if (algo == 0) {
+PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
+                                  PALISADEVector pv) {
+    // Need to determine if the matrix size matches up with the vector
+    // Otherwise, need to pad the input constant matrix with zeros
+    if (int(cm[0].size()) < pv._size) {
+        int size_diff = pv._size - int(cm[0].size());
+        for (int i = 0; i < int(cm.size()); i++) {
+            for (int j = 0; j < size_diff; j++)
+                cm[i].push_back(0);
+        }
+    }
+
+    if (cm.size() == cm[0].size()) {
         // Square matrix multiply
         // Need N-1 rotations for an N dimensional input vector
         // TODO: need to pad matrix so that it has the correct shape for the matrix multiply
@@ -196,13 +211,35 @@ PALISADEVector PALISADE::cmv_mult(const vector<vector<double>> &cm,
             diagonal_elements.push_back(lth_diagonal(cm, i));
         }
 
+        vector<vector<double>> decrypted_rotations;
+        for (int i = 0; i < int(vector_permutations.size()); i++)
+            decrypted_rotations.push_back(decrypt_vector(vector_permutations[i], 3));
+
         std::cout << "Input Matrix:\n";
         print_matrix(cm);
 
         std::cout << "Diagonal Elements:\n";
         print_matrix(diagonal_elements);
 
+        std::cout << "Input Vector:\n";
+        print_vector(decrypt_vector(pv, 3));
 
+        std::cout << "Vector Rotation Permutations:\n";
+        print_matrix(decrypted_rotations);
+
+        for (int i = 0; i < int(diagonal_elements.size()); i++){
+            vector<double> doubled_vector = double_vector(diagonal_elements[i]);
+            pv = vc_hadamard()
+        }
+
+    } else {
+        if (cm.size() > cm[0].size()) {
+            // More rows than columns (lanky/skinny matrix multiply)
+
+        } else {
+            // More columns than rows (squat/wide matrix multiply)
+
+        }
     }
     return pv;
 }
