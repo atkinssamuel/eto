@@ -16,7 +16,7 @@ public:
     int _unpadded_size;
     int size();
     int unpadded_size();
-    explicit PALISADEVector(
+    PALISADEVector(
         shared_ptr<CiphertextImpl<DCRTPolyImpl<bigintfxd::BigVectorImpl<BigInteger>>>>
         ct, int s);
 };

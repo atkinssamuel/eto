@@ -171,8 +171,9 @@ PALISADEVector PALISADE::vc_dot(const PALISADEVector &pv,
 }
 
 PALISADEVector PALISADE::vc_hadamard(const PALISADEVector &pv,
-                                     const vector<double> &cv){
-    return PALISADEVector(cc->EvalMult(pv.ciphertext, cc->MakeCKKSPackedPlaintext(cv)), pv._size);
+                                     const vector<double> &cv) {
+    return PALISADEVector(cc->EvalMult(pv.ciphertext,
+                                       cc->MakeCKKSPackedPlaintext(cv)), pv._size);
 }
 
 // Constant-Matrix Vector Operations:
@@ -187,6 +188,8 @@ PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
                 cm[i].push_back(0);
         }
     }
+
+    PALISADEVector result = pv;
 
     if (cm.size() == cm[0].size()) {
         // Square matrix multiply
@@ -215,21 +218,10 @@ PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
         for (int i = 0; i < int(vector_permutations.size()); i++)
             decrypted_rotations.push_back(decrypt_vector(vector_permutations[i], 3));
 
-        std::cout << "Input Matrix:\n";
-        print_matrix(cm);
-
-        std::cout << "Diagonal Elements:\n";
-        print_matrix(diagonal_elements);
-
-        std::cout << "Input Vector:\n";
-        print_vector(decrypt_vector(pv, 3));
-
-        std::cout << "Vector Rotation Permutations:\n";
-        print_matrix(decrypted_rotations);
-
-        for (int i = 0; i < int(diagonal_elements.size()); i++){
-            vector<double> doubled_vector = double_vector(diagonal_elements[i]);
-            pv = vc_hadamard()
+        result = vc_hadamard(vector_permutations[0], diagonal_elements[0]);
+        for (int i = 1; i < int(diagonal_elements.size()); i++) {
+            result = v_add(result, vc_hadamard(vector_permutations[i],
+                                               diagonal_elements[i]));
         }
 
     } else {
@@ -241,7 +233,7 @@ PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
 
         }
     }
-    return pv;
+    return result;
 }
 
 

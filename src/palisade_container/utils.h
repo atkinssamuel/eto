@@ -72,10 +72,9 @@ void print_vector(vector<double> v) {
     std::cout << std::endl;
 }
 
-vector<double> double_vector(vector<double> vector){
-    for (int i = 0; i < int(vector.size()); i++){
+vector<double> double_vector(vector<double> vector) {
+    for (int i = 0; i < int(vector.size()); i++)
         vector.push_back(vector[i]);
-    }
     return vector;
 }
 

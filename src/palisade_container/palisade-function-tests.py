@@ -12,6 +12,8 @@ def left_shift(m: np.array, l: int):
 
 
 cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(4)]
+skinny_cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(6)]
+wide_cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(2)]
 x1 = [1, 2, 3, 4]
 x2 = [3, 4, 5, 6]
 
@@ -38,7 +40,14 @@ print("\nleft_shift:", left_shift(x2, 3))
 palisade.set_rotation_indices(pv2, 3)
 print("v_rot:", palisade.decrypt_vector(palisade.v_rot(pv2, 3)))
 
-print("\nnp.matmul:", np.matmul(cm, x1))
-print("cm_v_mult:", palisade.decrypt_vector(palisade.cmv_mult(cm, pv1)))
+print("\nnp.matmul (square):", np.matmul(cm, x1))
+print("cm_v_mult (square):", palisade.decrypt_vector(palisade.cmv_mult(cm, pv1)))
+
+print("\nnp.matmul (skinny):", np.matmul(skinny_cm, x1))
+print("cm_v_mult (skinny):", palisade.decrypt_vector(palisade.cmv_mult(skinny_cm, pv1)))
+
+print("\nnp.matmul (wide):", np.matmul(wide_cm, x1))
+print("cm_v_mult (wide):", palisade.decrypt_vector(palisade.cmv_mult(wide_cm, pv1)))
+
 
 print("\nHello World")
