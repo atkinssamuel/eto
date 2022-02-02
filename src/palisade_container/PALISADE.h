@@ -189,50 +189,49 @@ PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
         }
     }
 
-    PALISADEVector result = pv;
+    // Square matrix multiply
+    // Setting the rotation indices for the vector rotation permutations
+    vector<int> index_list;
+    for (int i = 1; i < pv._size; i++)
+        index_list.push_back(i);
+    set_rotation_indices(pv, index_list);
 
-    if (cm.size() == cm[0].size()) {
-        // Square matrix multiply
-        // Need N-1 rotations for an N dimensional input vector
-        // TODO: need to pad matrix so that it has the correct shape for the matrix multiply
-        // Setting the rotation indices for the vector rotation permutations
-        vector<int> index_list;
-        for (int i = 1; i < pv._size; i++)
-            index_list.push_back(i);
-        set_rotation_indices(pv, index_list);
+    // Rotating the initial vector to obtain the needed vector permutations
+    vector<PALISADEVector> vector_permutations;
+    vector_permutations.push_back(pv);
 
-        // Rotating the initial vector to obtain all N vector permutations and extracting the diagonal
-        // elements from the input matrix
-        vector<PALISADEVector> vector_permutations;
-        vector_permutations.push_back(pv);
+    // Extracting the diagonal elements from the input array
+    vector<vector<double>> diagonal_elements;
+    diagonal_elements.push_back(lth_diagonal(cm, 0));
 
-        vector<vector<double>> diagonal_elements;
-        diagonal_elements.push_back(lth_diagonal(cm, 0));
-
-        for (int i = 1; i < pv._size; i++) {
-            vector_permutations.push_back(v_rot(pv, i));
-            diagonal_elements.push_back(lth_diagonal(cm, i));
-        }
-
-        vector<vector<double>> decrypted_rotations;
-        for (int i = 0; i < int(vector_permutations.size()); i++)
-            decrypted_rotations.push_back(decrypt_vector(vector_permutations[i], 3));
-
-        result = vc_hadamard(vector_permutations[0], diagonal_elements[0]);
-        for (int i = 1; i < int(diagonal_elements.size()); i++) {
-            result = v_add(result, vc_hadamard(vector_permutations[i],
-                                               diagonal_elements[i]));
-        }
-
-    } else {
-        if (cm.size() > cm[0].size()) {
-            // More rows than columns (lanky/skinny matrix multiply)
-
-        } else {
-            // More columns than rows (squat/wide matrix multiply)
-
-        }
+    for (int i = 1; i < std::min(int(cm[0].size()), int(cm.size())); i++) {
+        diagonal_elements.push_back(lth_diagonal(cm, i));
+        vector_permutations.push_back(v_rot(pv, i));
     }
+
+    vector<vector<double>> decrypted_rotations;
+    for (int i = 0; i < int(vector_permutations.size()); i++)
+        decrypted_rotations.push_back(decrypt_vector(vector_permutations[i], 3));
+
+    PALISADEVector result = vc_hadamard(vector_permutations[0],
+                                        diagonal_elements[0]);
+    for (int i = 1; i < int(diagonal_elements.size()); i++) {
+        result = v_add(result, vc_hadamard(vector_permutations[i],
+                                           diagonal_elements[i]));
+    }
+
+    // If wide matrix multiply, need to add by rotated result vector
+    if (int(cm.size()) < int(cm[0].size())) {
+        vector<int> result_rotation_list;
+        result_rotation_list.push_back(cm.size());
+        set_rotation_indices(result, result_rotation_list);
+        PALISADEVector rotated_vector = v_rot(result, result_rotation_list[0]);
+        result = v_add(result, rotated_vector);
+    }
+
+    // Resizing result for decryption
+    result._size = cm.size();
+
     return result;
 }
 

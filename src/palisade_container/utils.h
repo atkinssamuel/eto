@@ -38,23 +38,15 @@ vector<double> lth_diagonal(vector<vector<double>> matrix, int l) {
         Extracts the lth diagonal from the input matrix
     */
     vector<double> res;
-    if (matrix.size() >= matrix[0].size()) {
-        // more rows than columns
-        int col_ind = l % matrix[0].size();
-        for (int i = 0; i < int(matrix.size()); i++) {
-            res.push_back(matrix[i][col_ind]);
-            col_ind++;
-            col_ind = col_ind % matrix[0].size();
-        }
-    } else {
-        // more columns than rows
-        int row_ind = (matrix.size() - l) % matrix.size();
-        for (int i = 0; i < int(matrix[0].size()); i++) {
-            res.push_back(matrix[row_ind][i]);
-            row_ind++;
-            row_ind = row_ind % matrix.size();
-        }
+    int row_counter = 0;
+    int column_counter = l % matrix.size();
+
+    for (int i = 0; i < std::max(int(matrix.size()), int(matrix[0].size())); i++) {
+        res.push_back(matrix[row_counter][column_counter]);
+        row_counter = (row_counter + 1) % matrix.size();
+        column_counter = (column_counter + 1) % matrix[0].size();
     }
+
     return res;
 }
 
