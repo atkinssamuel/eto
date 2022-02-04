@@ -9,7 +9,11 @@ done;
 black_formatter="black ."
 cd ../
 $black_formatter
-cd palisade_container || exit
+
+# running PyTest
+cd tests || exit
+pytest
+cd ../palisade_container || exit
 
 # building cpp solution
 rm -r build

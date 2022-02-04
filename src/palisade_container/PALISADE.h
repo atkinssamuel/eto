@@ -72,8 +72,8 @@ public:
     // Constant-Matrix Vector Operations:
     PALISADEVector cmv_mult(vector<vector<double>> cm, PALISADEVector pv);
 
-//    PALISADERowMatrix encrypt_row_matrix(const vector<vector<double>> &matrix);
-//    vector<vector<double>> decrypt_row_matrix(const PALISADERowMatrix &prm);
+    PALISADEMatrix encrypt_matrix(vector<vector<double>> matrix, bool row_wise);
+    vector<vector<double>> decrypt_matrix(PALISADEMatrix pm, int decimal_places);
 };
 
 PALISADE::PALISADE(uint32_t mult_depth, uint32_t scaleFactorBits,
@@ -233,6 +233,42 @@ PALISADEVector PALISADE::cmv_mult(vector<vector<double>> cm,
     result._size = cm.size();
 
     return result;
+}
+
+PALISADEMatrix PALISADE::encrypt_matrix(vector<vector<double>> matrix,
+                                        bool row_wise) {
+    vector<PALISADEVector> vector_list;
+    if (row_wise) {
+        for (int i = 0; i < int(matrix.size()); i++)
+            vector_list.push_back(PALISADE::encrypt_vector(matrix[i], true));
+        return PALISADEMatrix(vector_list, true);
+    } else {
+        for (int row_ind = 0; row_ind < int(matrix.size()); row_ind++) {
+            vector<double> column;
+            for (int col_ind = 0; col_ind < int(matrix[0].size()); col_ind++)
+                column.push_back(matrix[row_ind][col_ind]);
+            vector_list.push_back(PALISADE::encrypt_vector(column, true));
+        }
+        return PALISADEMatrix(vector_list, false);
+    }
+}
+
+vector<vector<double>> PALISADE::decrypt_matrix(PALISADEMatrix pm,
+int decimal_places) {
+    vector<vector<double>> matrix;
+    if (pm._row_wise) {
+        for (int row_ind = 0; row_ind < pm.rows; row_ind++)
+            matrix.push_back(PALISADE::decrypt_vector(pm.matrix[row_ind], decimal_places));
+    } else {
+        matrix.resize(pm.rows, vector<double>(pm.columns));
+        for (int col_ind = 0; col_ind < pm.columns; col_ind++) {
+            vector<double> column = PALISADE::decrypt_vector(pm.matrix[col_ind],
+                                    decimal_places);
+            for (int row_ind = 0; row_ind < pm.rows; row_ind++)
+                matrix[row_ind][col_ind] = column[row_ind];
+        }
+    }
+    return matrix;
 }
 
 

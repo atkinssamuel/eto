@@ -11,11 +11,24 @@ def left_shift(m: np.array, l: int):
     return np.hstack((m[l:], m[:l]))
 
 
-cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(4)]
-skinny_cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(6)]
-wide_cm = [[np.random.randint(0, 5) for i in range(4)] for j in range(2)]
-x1 = [1, 2, 3, 4]
-x2 = [3, 4, 5, 6]
+vector_dim = 8
+matrix_shape = (8, 8)
+
+cm = [
+    [np.random.randint(0, 5) for i in range(matrix_shape[1])]
+    for j in range(matrix_shape[0])
+]
+skinny_cm = [
+    [np.random.randint(0, 5) for i in range(matrix_shape[1] - 1)]
+    for j in range(matrix_shape[0])
+]
+wide_cm = [
+    [np.random.randint(0, 5) for i in range(matrix_shape[1] + 1)]
+    for j in range(matrix_shape[0])
+]
+
+x1 = [np.random.randint(0, 5) for i in range(vector_dim)]
+x2 = [np.random.randint(0, 5) for i in range(vector_dim)]
 
 pv1 = palisade.encrypt_vector(x1)
 pv2 = palisade.encrypt_vector(x2)
