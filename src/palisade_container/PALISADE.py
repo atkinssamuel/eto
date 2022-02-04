@@ -1,5 +1,5 @@
 import numpy as np
-from build.PALISADEContainer import *
+from src.palisade_container.build.PALISADEContainer import *
 
 
 class PALISADE:

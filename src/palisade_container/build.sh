@@ -9,6 +9,9 @@ done;
 black_formatter="black ."
 cd ../
 $black_formatter
+
+# running PyTest
+python tests/test.py
 cd palisade_container || exit
 
 # building cpp solution
@@ -17,8 +20,5 @@ mkdir build
 cd build || exit
 cmake ..
 make
-touch __init__.py
 
-# running PyTest
-cd ../../tests || exit
-pytest
+
